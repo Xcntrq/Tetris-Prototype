@@ -16,6 +16,7 @@ namespace nsShapeSpawner
 
         public SctShape SpawnRandomShape()
         {
+            //Spawn a new random shape at the position of the spawner
             SctShape newShape = Instantiate(GetRandomShape(), transform.position, Quaternion.identity, transform);
             if (newShape == null) Debug.Log("ERROR! Null shape in SpawnRandomShape()!");
             return newShape;

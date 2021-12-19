@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,6 +7,7 @@ public class GameManager : MonoBehaviour
     private nsGameBoard.SctGameBoard m_sctGameBoard;
     private nsShapeSpawner.SctShapeSpawner m_sctShapeSpawner;
     private nsShape.SctShape m_movingShape;
+    private nsSoundManager.SctSoundManager m_soundManager;
 
     [SerializeField] private GameObject m_panelGameOver;
 
@@ -33,10 +35,17 @@ public class GameManager : MonoBehaviour
     //Do we need a comment on that one? Srsly?
     private bool m_isGameOver;
 
+    public event Action OnGameOver;
+    public event Action OnShapeDrop;
+    public event Action OnShapeMoveError;
+    public event Action OnShapeMoveSuccess;
+    public event Action<int> OnRowClear;
+
     private void Awake()
     {
         m_sctGameBoard = FindObjectOfType<nsGameBoard.SctGameBoard>();
         m_sctShapeSpawner = FindObjectOfType<nsShapeSpawner.SctShapeSpawner>();
+        m_soundManager = FindObjectOfType<nsSoundManager.SctSoundManager>();
 
         //Any key is allowed to proc as soon as the game has started
         m_timeOfNextMoveLeft = Time.time;
@@ -46,6 +55,8 @@ public class GameManager : MonoBehaviour
 
         m_isAllowedToHold = false;
         m_isGameOver = false;
+
+        OnGameOver += HandleGameOver;
     }
 
     private void Start()
@@ -95,6 +106,11 @@ public class GameManager : MonoBehaviour
             result = true;
             if (isDebugLogNeeded) Debug.Log("ERROR! m_panelGameOver is unassigned!");
         }
+        if (m_soundManager == null)
+        {
+            result = true;
+            if (isDebugLogNeeded) Debug.Log("ERROR! SoundManager not found!");
+        }
         return result;
     }
 
@@ -111,14 +127,30 @@ public class GameManager : MonoBehaviour
             //Try moving it left
             m_movingShape.MoveLeft();
             //If the new position is against the rules of tetris, just move it back to where it was
-            if (!m_sctGameBoard.IsPositionValid(m_movingShape)) m_movingShape.MoveRight();
+            if (m_sctGameBoard.IsPositionValid(m_movingShape))
+            {
+                OnShapeMoveSuccess?.Invoke();
+            }
+            else
+            {
+                OnShapeMoveError?.Invoke();
+                m_movingShape.MoveRight();
+            }
         }
         else if ((Input.GetButton("MoveRight") && (Time.time > m_timeOfNextMoveRight) && m_isAllowedToHold) || Input.GetButtonDown("MoveRight"))
         {
             m_timeOfNextMoveRight = Time.time + m_moveRightCooldown;
             m_isAllowedToHold = true;
             m_movingShape.MoveRight();
-            if (!m_sctGameBoard.IsPositionValid(m_movingShape)) m_movingShape.MoveLeft();
+            if (m_sctGameBoard.IsPositionValid(m_movingShape))
+            {
+                OnShapeMoveSuccess?.Invoke();
+            }
+            else
+            {
+                OnShapeMoveError?.Invoke();
+                m_movingShape.MoveLeft();
+            }
         }
         if ((Input.GetButton("MoveDown") && (Time.time > m_timeOfNextMoveDown) && m_isAllowedToHold) || Input.GetButtonDown("MoveDown"))
         {
@@ -131,7 +163,15 @@ public class GameManager : MonoBehaviour
             m_timeOfNextRotate = Time.time + m_rotateCooldown;
             m_isAllowedToHold = true;
             m_movingShape.RotateCW();
-            if (!m_sctGameBoard.IsPositionValid(m_movingShape)) m_movingShape.RotateCCW();
+            if (m_sctGameBoard.IsPositionValid(m_movingShape))
+            {
+                OnShapeMoveSuccess?.Invoke();
+            }
+            else
+            {
+                OnShapeMoveError?.Invoke();
+                m_movingShape.RotateCCW();
+            }
         }
     }
 
@@ -145,20 +185,28 @@ public class GameManager : MonoBehaviour
             m_movingShape.MoveUp();
             //Also this means that the bottom of the shape has hit something, landed, so in the grid it goes and maybe completes some rows
             m_sctGameBoard.StoreShapeInGrid(m_movingShape);
-            m_sctGameBoard.ClearAllCompleteRows();
+            int rowsCleared = m_sctGameBoard.ClearAllCompleteRows();
+            if (rowsCleared > 0)
+            {
+                OnRowClear?.Invoke(rowsCleared);
+            }
+            else
+            {
+                OnShapeDrop?.Invoke();
+            }
             //If the shape landed above the visible grid, it's a game over
             m_isGameOver = m_sctGameBoard.IsShapeInHeaderSpace();
-            if (!m_isGameOver)
+            if (m_isGameOver)
+            {
+                OnGameOver?.Invoke();
+            }
+            else
             {
                 //Otherwise we're gonna need a new shape, which is also not allowed to drop immediately, hence the cooldown
                 m_movingShape = m_sctShapeSpawner.SpawnRandomShape();
                 m_timeOfNextShapeDrop = Time.time + m_shapeDropCooldown;
                 //If the player is holding down any buttons, the new shape won't be affected
                 m_isAllowedToHold = false;
-            }
-            else
-            {
-                HandleGameOver();
             }
         }
     }

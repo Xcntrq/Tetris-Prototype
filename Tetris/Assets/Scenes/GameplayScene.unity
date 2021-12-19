@@ -907,6 +907,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 438622936}
   m_CullTransparentMesh: 1
+--- !u!114 &515137088 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3622366187511440425, guid: c4c76eee7b64dd848a2a8c2d30f88124, type: 3}
+  m_PrefabInstance: {fileID: 1281618926}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1654,6 +1665,67 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 888373922}
   m_CullTransparentMesh: 1
+--- !u!1 &898772428 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3622366186912497714, guid: c4c76eee7b64dd848a2a8c2d30f88124, type: 3}
+  m_PrefabInstance: {fileID: 1281618926}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &898772430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 898772428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 515137088}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2004371602}
+        m_TargetAssemblyTypeName: nsSoundManager.SctSoundManager, Assembly-CSharp
+        m_MethodName: ToggleSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!224 &900680599 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3622366186912497717, guid: c4c76eee7b64dd848a2a8c2d30f88124, type: 3}
@@ -3431,8 +3503,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_isMusicEnabled: 1
+  m_isSoundEnabled: 1
   m_musicVolume: 0.1
+  m_SoundVolume: 0.5
   m_musicClip: {fileID: 8300000, guid: 967bb810f9fc65a47ab677eb4c98478b, type: 3}
+  m_gameOverClip: {fileID: 8300000, guid: 98b165e42e1e1e3489f77fb5e4e4bd4a, type: 3}
+  m_rowClearClip: {fileID: 8300000, guid: 2ce11d998ae046748b95eba1df80d1c3, type: 3}
+  m_shapeDropClip: {fileID: 8300000, guid: 6764459b6d83d8e47b19cba426d489b5, type: 3}
+  m_shapeMoveErrorClip: {fileID: 8300000, guid: 7d1710732253b514dbd528eb7851fc62, type: 3}
+  m_shapeMoveSuccessClip: {fileID: 8300000, guid: cfa946c98785f1e45a8a7516e0481e91, type: 3}
+  m_gameOverVoiceClip: {fileID: 8300000, guid: 5bf068cc05f1fda4f9990af4a612b8af, type: 3}
+  m_voiceClips:
+  - {fileID: 8300000, guid: 7a56679b6c58fb54392366367aa7da61, type: 3}
+  - {fileID: 8300000, guid: 1606adef676e9624f82a6572809b317c, type: 3}
+  - {fileID: 8300000, guid: e82880aa8ca4e4841b6f2c730b5fafa4, type: 3}
+  - {fileID: 8300000, guid: 18662b6d516589a4d82057fbd3f77248, type: 3}
   m_musicSource: {fileID: 639185233}
 --- !u!4 &2004371603
 Transform:

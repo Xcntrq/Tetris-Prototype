@@ -118,17 +118,20 @@ namespace nsGameBoard
             }
         }
 
-        public void ClearAllCompleteRows()
+        public int ClearAllCompleteRows()
         {
+            int result = 0;
             for (int y = 0; y < m_height; y++)
             {
                 if (IsRowCompleteAt(y))
                 {
+                    result++;
                     ClearRowAt(y);
                     ShiftRowsDownFrom(y + 1);
                     y--;
                 }
             }
+            return result;
         }
 
         public bool IsShapeInHeaderSpace()

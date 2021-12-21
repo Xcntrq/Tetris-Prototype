@@ -4,8 +4,9 @@ namespace nsSoundManager
 {
     public class SctSoundManager : MonoBehaviour
     {
-        [SerializeField] private bool m_isMusicEnabled;
-        [SerializeField] private bool m_isSoundEnabled;
+        private bool m_isMusicEnabled;
+        private bool m_isSoundEnabled;
+
         [SerializeField] private float m_musicVolume;
         [SerializeField] private float m_SoundVolume;
         [SerializeField] private AudioClip m_musicClip;
@@ -31,14 +32,9 @@ namespace nsSoundManager
             sctGameManager.OnShapeMoveSuccess += () => { PlayClip(m_shapeMoveSuccessClip, 1); };
         }
 
-        private void Start()
-        {
-            PlayMusic();
-        }
-
         private void PlayMusic()
         {
-            if (!m_isMusicEnabled || !m_musicClip || !m_musicSource) return;
+            if (!m_musicClip || !m_musicSource) return;
             m_musicSource.Stop();
             m_musicSource.clip = m_musicClip;
             m_musicSource.volume = m_musicVolume;
@@ -46,7 +42,7 @@ namespace nsSoundManager
             m_musicSource.Play();
         }
 
-        private void CheckIsMusicEnabled()
+        private void CheckIfMusicShouldPlay()
         {
             if (m_musicSource.isPlaying == m_isMusicEnabled) return;
             if (!m_isMusicEnabled) m_musicSource.Stop();
@@ -56,12 +52,23 @@ namespace nsSoundManager
         public void ToggleMusic()
         {
             m_isMusicEnabled = !m_isMusicEnabled;
-            CheckIsMusicEnabled();
+            CheckIfMusicShouldPlay();
+        }
+
+        public void ToggleMusic(bool state)
+        {
+            m_isMusicEnabled = state;
+            CheckIfMusicShouldPlay();
         }
 
         public void ToggleSound()
         {
             m_isSoundEnabled = !m_isSoundEnabled;
+        }
+
+        public void ToggleSound(bool state)
+        {
+            m_isSoundEnabled = state;
         }
 
         private void PlayClip(AudioClip clip, float volume)

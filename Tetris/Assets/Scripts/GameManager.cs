@@ -2,6 +2,12 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum RotationDirection
+{
+    CW,
+    CCW
+}
+
 public class GameManager : MonoBehaviour
 {
     private nsGameBoard.SctGameBoard m_sctGameBoard;
@@ -40,6 +46,8 @@ public class GameManager : MonoBehaviour
     public event Action OnShapeMoveError;
     public event Action OnShapeMoveSuccess;
     public event Action<int> OnRowClear;
+
+    private RotationDirection m_rotationDirection;
 
     private void Awake()
     {
@@ -162,7 +170,7 @@ public class GameManager : MonoBehaviour
         {
             m_timeOfNextRotate = Time.time + m_rotateCooldown;
             m_isAllowedToHold = true;
-            m_movingShape.RotateCW();
+            m_movingShape.Rotate(m_rotationDirection);
             if (m_sctGameBoard.IsPositionValid(m_movingShape))
             {
                 OnShapeMoveSuccess?.Invoke();
@@ -170,7 +178,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 OnShapeMoveError?.Invoke();
-                m_movingShape.RotateCCW();
+                m_movingShape.RotateOppositeDirection(m_rotationDirection);
             }
         }
     }
@@ -219,5 +227,23 @@ public class GameManager : MonoBehaviour
     public void ReloadScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void ToggleRotationDirection()
+    {
+        switch (m_rotationDirection)
+        {
+            case RotationDirection.CW:
+                m_rotationDirection = RotationDirection.CCW;
+                break;
+            case RotationDirection.CCW:
+                m_rotationDirection = RotationDirection.CW;
+                break;
+        }
+    }
+
+    public void ToggleRotationDirection(RotationDirection rotationDirection)
+    {
+        m_rotationDirection = rotationDirection;
     }
 }

@@ -912,7 +912,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3622366187511440425, guid: c4c76eee7b64dd848a2a8c2d30f88124, type: 3}
   m_PrefabInstance: {fileID: 1281618926}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1281618927}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -1349,6 +1349,79 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4c76eee7b64dd848a2a8c2d30f88124, type: 3}
+--- !u!1 &636793821 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3622366186912497714, guid: c4c76eee7b64dd848a2a8c2d30f88124, type: 3}
+  m_PrefabInstance: {fileID: 581189953}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &636793822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636793821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 716451424}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 60420271}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ToggleRotationDirection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 716451422}
+        m_TargetAssemblyTypeName: nsImageTogglerRotate.SctImageTogglerRotate, Assembly-CSharp
+        m_MethodName: ToggleImage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &639185232
 GameObject:
   m_ObjectHideFlags: 0
@@ -1581,6 +1654,52 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4c76eee7b64dd848a2a8c2d30f88124, type: 3}
+--- !u!1 &716451421 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3622366187511440471, guid: c4c76eee7b64dd848a2a8c2d30f88124, type: 3}
+  m_PrefabInstance: {fileID: 581189953}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &716451422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 716451421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a38350d90868c8446a9b43c5ec75af21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 60420271}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ToggleRotationDirection
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_imageWhenCW: {fileID: 21300000, guid: 50766561c9a92fa4da18e68e6203c5b9, type: 3}
+  m_imageWhenCCW: {fileID: 21300000, guid: ffc68520d50a893498c3fcd4ed8d0d09, type: 3}
+  m_rotationDirection: 0
+--- !u!114 &716451424 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3622366187511440425, guid: c4c76eee7b64dd848a2a8c2d30f88124, type: 3}
+  m_PrefabInstance: {fileID: 581189953}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 716451421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &861026643 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3622366186912497717, guid: c4c76eee7b64dd848a2a8c2d30f88124, type: 3}
@@ -1717,6 +1836,18 @@ MonoBehaviour:
       - m_Target: {fileID: 2004371602}
         m_TargetAssemblyTypeName: nsSoundManager.SctSoundManager, Assembly-CSharp
         m_MethodName: ToggleSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1281618928}
+        m_TargetAssemblyTypeName: nsImageTogglerOnOff.SctImageTogglerOnOff, Assembly-CSharp
+        m_MethodName: ToggleImage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2403,6 +2534,41 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4c76eee7b64dd848a2a8c2d30f88124, type: 3}
+--- !u!1 &1281618927 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3622366187511440471, guid: c4c76eee7b64dd848a2a8c2d30f88124, type: 3}
+  m_PrefabInstance: {fileID: 1281618926}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1281618928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1281618927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 957d7baaa20c63a4f96ab90083ec4e77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2004371602}
+        m_TargetAssemblyTypeName: nsSoundManager.SctSoundManager, Assembly-CSharp
+        m_MethodName: ToggleSound
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  m_imageWhenOn: {fileID: 21300000, guid: 4d18519cb81b7264a9b8353bfc2ec7d1, type: 3}
+  m_imageWhenOff: {fileID: 21300000, guid: 5c45b77edc59d9947bc647bae282f716, type: 3}
+  m_isOn: 1
 --- !u!1001 &1324773033
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2520,6 +2686,41 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4c76eee7b64dd848a2a8c2d30f88124, type: 3}
+--- !u!1 &1324773034 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3622366187511440471, guid: c4c76eee7b64dd848a2a8c2d30f88124, type: 3}
+  m_PrefabInstance: {fileID: 1324773033}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1324773035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324773034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 957d7baaa20c63a4f96ab90083ec4e77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnStart:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2004371602}
+        m_TargetAssemblyTypeName: nsSoundManager.SctSoundManager, Assembly-CSharp
+        m_MethodName: ToggleMusic
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  m_imageWhenOn: {fileID: 21300000, guid: 2cabb068e32e72c48a43fb3bce941a03, type: 3}
+  m_imageWhenOff: {fileID: 21300000, guid: 1c68fbbf6c4790b4f9ea84d744b25fef, type: 3}
+  m_isOn: 1
 --- !u!1 &1428889328
 GameObject:
   m_ObjectHideFlags: 0
@@ -2676,7 +2877,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3622366187511440425, guid: c4c76eee7b64dd848a2a8c2d30f88124, type: 3}
   m_PrefabInstance: {fileID: 1324773033}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1324773034}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -2785,6 +2986,18 @@ MonoBehaviour:
       - m_Target: {fileID: 2004371602}
         m_TargetAssemblyTypeName: nsSoundManager.SctSoundManager, Assembly-CSharp
         m_MethodName: ToggleMusic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1324773035}
+        m_TargetAssemblyTypeName: nsImageTogglerOnOff.SctImageTogglerOnOff, Assembly-CSharp
+        m_MethodName: ToggleImage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3502,8 +3715,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 798b2bfe10fcfb5458095960cace98f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_isMusicEnabled: 1
-  m_isSoundEnabled: 1
   m_musicVolume: 0.1
   m_SoundVolume: 0.5
   m_musicClip: {fileID: 8300000, guid: 967bb810f9fc65a47ab677eb4c98478b, type: 3}

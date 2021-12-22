@@ -7,8 +7,9 @@ namespace nsSoundManager
         private bool m_isMusicEnabled;
         private bool m_isSoundEnabled;
 
-        [SerializeField] private float m_musicVolume;
         [SerializeField] private float m_SoundVolume;
+        [SerializeField] private float m_musicVolume;
+        [SerializeField] private float m_musicVolumeMultiplierWhenPaused;
         [SerializeField] private AudioClip m_musicClip;
         [SerializeField] private AudioClip m_gameOverClip;
         [SerializeField] private AudioClip m_rowClearClip;
@@ -19,6 +20,7 @@ namespace nsSoundManager
         [SerializeField] private AudioClip[] m_voiceClips;
         [SerializeField] private AudioSource m_musicSource;
 
+        private float m_musicVolumeMultiplier;
         private Vector3 m_cameraPosition;
 
         private void Awake()
@@ -30,6 +32,8 @@ namespace nsSoundManager
             sctGameManager.OnShapeDrop += () => { PlayClip(m_shapeDropClip, 1); };
             sctGameManager.OnShapeMoveError += () => { PlayClip(m_shapeMoveErrorClip, 1); };
             sctGameManager.OnShapeMoveSuccess += () => { PlayClip(m_shapeMoveSuccessClip, 1); };
+            sctGameManager.OnPauseToggled += GameManager_OnPauseToggled;
+            m_musicVolumeMultiplier = 1;
         }
 
         private void PlayMusic()
@@ -37,7 +41,7 @@ namespace nsSoundManager
             if (!m_musicClip || !m_musicSource) return;
             m_musicSource.Stop();
             m_musicSource.clip = m_musicClip;
-            m_musicSource.volume = m_musicVolume;
+            m_musicSource.volume = m_musicVolume * m_musicVolumeMultiplier;
             m_musicSource.loop = true;
             m_musicSource.Play();
         }
@@ -92,6 +96,12 @@ namespace nsSoundManager
                 PlayClip(m_voiceClips[i], 1);
             }
             PlayClip(m_rowClearClip, 1);
+        }
+
+        private void GameManager_OnPauseToggled(bool isGamePaused)
+        {
+            m_musicVolumeMultiplier = isGamePaused ? m_musicVolumeMultiplierWhenPaused : 1;
+            m_musicSource.volume = m_musicVolume * m_musicVolumeMultiplier;
         }
     }
 }

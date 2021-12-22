@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     private nsSoundManager.SctSoundManager m_soundManager;
 
     [SerializeField] private GameObject m_panelGameOver;
+    [SerializeField] private GameObject m_panelGamePaused;
 
     //Minimum amount of time between procs for each key while holding
     [SerializeField] private float m_moveLeftCooldown;
@@ -40,12 +41,14 @@ public class GameManager : MonoBehaviour
 
     //Do we need a comment on that one? Srsly?
     private bool m_isGameOver;
+    private bool m_isGamePaused;
 
     public event Action OnGameOver;
     public event Action OnShapeDrop;
     public event Action OnShapeMoveError;
     public event Action OnShapeMoveSuccess;
     public event Action<int> OnRowClear;
+    public event Action<bool> OnPauseToggled;
 
     private RotationDirection m_rotationDirection;
 
@@ -82,7 +85,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (IsAnyRequiredObjectNull(false) || m_isGameOver) return;
+        if (IsAnyRequiredObjectNull(false) || m_isGameOver || m_isGamePaused) return;
         if (Input.anyKey) HandleInput();
         if (Time.time > m_timeOfNextShapeDrop)
         {
@@ -113,6 +116,11 @@ public class GameManager : MonoBehaviour
         {
             result = true;
             if (isDebugLogNeeded) Debug.Log("ERROR! m_panelGameOver is unassigned!");
+        }
+        if (m_panelGamePaused == null)
+        {
+            result = true;
+            if (isDebugLogNeeded) Debug.Log("ERROR! m_panelGamePaused is unassigned!");
         }
         if (m_soundManager == null)
         {
@@ -226,6 +234,7 @@ public class GameManager : MonoBehaviour
 
     public void ReloadScene()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -245,5 +254,15 @@ public class GameManager : MonoBehaviour
     public void ToggleRotationDirection(RotationDirection rotationDirection)
     {
         m_rotationDirection = rotationDirection;
+    }
+
+    public void TogglePause()
+    {
+        if (m_isGameOver) return;
+        if (!m_panelGamePaused) return;
+        m_isGamePaused = !m_isGamePaused;
+        m_panelGamePaused.SetActive(m_isGamePaused);
+        OnPauseToggled?.Invoke(m_isGamePaused);
+        Time.timeScale = m_isGamePaused ? 0 : 1;
     }
 }

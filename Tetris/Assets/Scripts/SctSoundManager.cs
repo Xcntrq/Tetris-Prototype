@@ -17,6 +17,7 @@ namespace nsSoundManager
         [SerializeField] private AudioClip m_shapeMoveErrorClip;
         [SerializeField] private AudioClip m_shapeMoveSuccessClip;
         [SerializeField] private AudioClip m_gameOverVoiceClip;
+        [SerializeField] private AudioClip m_LevelUpVoiceClip;
         [SerializeField] private AudioClip[] m_voiceClips;
         [SerializeField] private AudioSource m_musicSource;
 
@@ -88,9 +89,13 @@ namespace nsSoundManager
             PlayClip(m_gameOverVoiceClip, 1);
         }
 
-        private void GameManager_OnRowClear(int rowsCleared)
+        private void GameManager_OnRowClear(int rowsCleared, bool hasLeveledUp)
         {
-            if (rowsCleared > 1)
+            if (hasLeveledUp)
+            {
+                PlayClip(m_LevelUpVoiceClip, 1);
+            }
+            else if (rowsCleared > 1)
             {
                 int i = Random.Range(0, m_voiceClips.Length);
                 PlayClip(m_voiceClips[i], 1);

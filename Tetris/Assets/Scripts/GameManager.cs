@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     private nsShapeSpawner.SctShapeSpawner m_sctShapeSpawner;
     private nsShape.SctShape m_movingShape;
     private nsSoundManager.SctSoundManager m_soundManager;
+    private nsScoreManager.SctScoreManager m_scoreManager;
 
     [SerializeField] private GameObject m_panelGameOver;
     [SerializeField] private GameObject m_panelGamePaused;
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour
 
     //Time interval used to drop the current moving shape by 1 tile automatically
     [SerializeField] private float m_shapeDropCooldown;
+    private float m_shapeDropCooldownAtStart;
 
     //Absolute timestamp when each key can proc
     private float m_timeOfNextMoveLeft;
@@ -47,7 +49,7 @@ public class GameManager : MonoBehaviour
     public event Action OnShapeDrop;
     public event Action OnShapeMoveError;
     public event Action OnShapeMoveSuccess;
-    public event Action<int> OnRowClear;
+    public event Action<int, bool> OnRowClear;
     public event Action<bool> OnPauseToggled;
 
     private RotationDirection m_rotationDirection;
@@ -57,6 +59,7 @@ public class GameManager : MonoBehaviour
         m_sctGameBoard = FindObjectOfType<nsGameBoard.SctGameBoard>();
         m_sctShapeSpawner = FindObjectOfType<nsShapeSpawner.SctShapeSpawner>();
         m_soundManager = FindObjectOfType<nsSoundManager.SctSoundManager>();
+        m_scoreManager = FindObjectOfType<nsScoreManager.SctScoreManager>();
 
         //Any key is allowed to proc as soon as the game has started
         m_timeOfNextMoveLeft = Time.time;
@@ -68,6 +71,7 @@ public class GameManager : MonoBehaviour
         m_isGameOver = false;
 
         OnGameOver += HandleGameOver;
+        m_shapeDropCooldownAtStart = m_shapeDropCooldown;
     }
 
     private void Start()
@@ -126,6 +130,11 @@ public class GameManager : MonoBehaviour
         {
             result = true;
             if (isDebugLogNeeded) Debug.Log("ERROR! SoundManager not found!");
+        }
+        if (m_scoreManager == null)
+        {
+            result = true;
+            if (isDebugLogNeeded) Debug.Log("ERROR! ScoreManager not found!");
         }
         return result;
     }
@@ -204,7 +213,9 @@ public class GameManager : MonoBehaviour
             int rowsCleared = m_sctGameBoard.ClearAllCompleteRows();
             if (rowsCleared > 0)
             {
-                OnRowClear?.Invoke(rowsCleared);
+                bool hasLeveledUp = m_scoreManager.AddScore(rowsCleared);
+                OnRowClear?.Invoke(rowsCleared, hasLeveledUp);
+                if (hasLeveledUp) m_shapeDropCooldown = Mathf.Clamp(m_shapeDropCooldownAtStart - 0.05f * (m_scoreManager.Level - 1), 0.05f, 1f);
             }
             else
             {

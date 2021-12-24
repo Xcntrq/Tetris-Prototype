@@ -232,7 +232,7 @@ public class GameManager : MonoBehaviour
                 //Otherwise we're gonna need a new shape, which is also not allowed to drop immediately, hence the cooldown
                 m_movingShape = m_sctShapeSpawner.SpawnRandomShape();
                 m_timeOfNextShapeDrop = Time.time + m_shapeDropCooldown;
-                //If the player is holding down any buttons, the new shape won't be affected
+                //If the player is holding down any buttons, the new shape shouldn't be affected
                 m_isAllowedToHold = false;
             }
         }

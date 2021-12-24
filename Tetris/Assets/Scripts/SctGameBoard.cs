@@ -90,7 +90,7 @@ namespace nsGameBoard
         {
             for (int x = 0; x < m_width; x++)
             {
-                //Destroys every square in the grid at a given Y
+                //Destroys a row of squares in the grid at a given Y
                 if (m_grid[x, y] != null) Destroy(m_grid[x, y].gameObject);
                 m_grid[x, y] = null;
             }
@@ -120,23 +120,23 @@ namespace nsGameBoard
 
         public int ClearAllCompleteRows()
         {
-            int result = 0;
+            int rowsCleared = 0;
             for (int y = 0; y < m_height; y++)
             {
                 if (IsRowCompleteAt(y))
                 {
-                    result++;
+                    rowsCleared++;
                     ClearRowAt(y);
                     ShiftRowsDownFrom(y + 1);
                     y--;
                 }
             }
-            return result;
+            return rowsCleared;
         }
 
         public bool IsShapeInHeaderSpace()
         {
-            //Check every X for every Y above the visible grid for a non-null entry
+            //Check every (X, Y) above the visible grid for a non-null entry
             for (int y = m_height - m_header; y < m_height; y++)
             {
                 for (int x = 0; x < m_width; x++)

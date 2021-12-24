@@ -26,28 +26,18 @@ namespace nsShape
             transform.Translate(Vector3.down, Space.World);
         }
 
-        private void RotateCW()
-        {
-            if (!m_isRotatable) return;
-            transform.Rotate(0, 0, -90);
-        }
-
-        private void RotateCCW()
-        {
-            if (!m_isRotatable) return;
-            transform.Rotate(0, 0, 90);
-        }
-
         public void Rotate(RotationDirection rotationDirection)
         {
-            if (rotationDirection == RotationDirection.CW) RotateCW();
-            if (rotationDirection == RotationDirection.CCW) RotateCCW();
+            if (!m_isRotatable) return;
+            if (rotationDirection == RotationDirection.CW) transform.Rotate(0, 0, -90);
+            if (rotationDirection == RotationDirection.CCW) transform.Rotate(0, 0, 90);
         }
 
         public void RotateOppositeDirection(RotationDirection rotationDirection)
         {
-            if (rotationDirection == RotationDirection.CW) RotateCCW();
-            if (rotationDirection == RotationDirection.CCW) RotateCW();
+            if (!m_isRotatable) return;
+            if (rotationDirection == RotationDirection.CW) transform.Rotate(0, 0, 90);
+            if (rotationDirection == RotationDirection.CCW) transform.Rotate(0, 0, -90);
         }
     }
 }

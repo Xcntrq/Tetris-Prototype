@@ -340,6 +340,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49fe7ba62908d8743b0785b1d06f0e41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_rotationDirection: 0
+  m_imageTogglerRotate: {fileID: 716451422}
   m_panelGameOver: {fileID: 540796582}
   m_panelGamePaused: {fileID: 1822007416}
   m_moveLeftCooldown: 0.2
@@ -1803,7 +1805,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &558016534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1817,7 +1819,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_allShapes:
-  - {fileID: 105551592106822257, guid: 5b55faf70194b534c83c80387239d8dd, type: 3}
+  - {fileID: -7995469593441831369, guid: 5b55faf70194b534c83c80387239d8dd, type: 3}
+  m_ghostColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!4 &558016535
 Transform:
   m_ObjectHideFlags: 0
@@ -2134,18 +2137,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 716451422}
-        m_TargetAssemblyTypeName: nsImageTogglerRotate.SctImageTogglerRotate, Assembly-CSharp
-        m_MethodName: ToggleImage
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &639185232
 GameObject:
   m_ObjectHideFlags: 0
@@ -2406,24 +2397,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a38350d90868c8446a9b43c5ec75af21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnStart:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 60420271}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: ToggleRotationDirection
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   m_imageWhenCW: {fileID: 21300000, guid: 50766561c9a92fa4da18e68e6203c5b9, type: 3}
   m_imageWhenCCW: {fileID: 21300000, guid: ffc68520d50a893498c3fcd4ed8d0d09, type: 3}
-  m_rotationDirection: 0
 --- !u!114 &716451424 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3622366187511440425, guid: c4c76eee7b64dd848a2a8c2d30f88124, type: 3}
@@ -2848,18 +2823,6 @@ MonoBehaviour:
       - m_Target: {fileID: 2004371602}
         m_TargetAssemblyTypeName: nsSoundManager.SctSoundManager, Assembly-CSharp
         m_MethodName: ToggleSound
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1281618928}
-        m_TargetAssemblyTypeName: nsImageTogglerOnOff.SctImageTogglerOnOff, Assembly-CSharp
-        m_MethodName: ToggleImage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3785,24 +3748,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 957d7baaa20c63a4f96ab90083ec4e77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnStart:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2004371602}
-        m_TargetAssemblyTypeName: nsSoundManager.SctSoundManager, Assembly-CSharp
-        m_MethodName: ToggleSound
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
   m_imageWhenOn: {fileID: 21300000, guid: 4d18519cb81b7264a9b8353bfc2ec7d1, type: 3}
   m_imageWhenOff: {fileID: 21300000, guid: 5c45b77edc59d9947bc647bae282f716, type: 3}
-  m_isOn: 1
 --- !u!1001 &1324773033
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3937,24 +3884,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 957d7baaa20c63a4f96ab90083ec4e77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnStart:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2004371602}
-        m_TargetAssemblyTypeName: nsSoundManager.SctSoundManager, Assembly-CSharp
-        m_MethodName: ToggleMusic
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
   m_imageWhenOn: {fileID: 21300000, guid: 2cabb068e32e72c48a43fb3bce941a03, type: 3}
   m_imageWhenOff: {fileID: 21300000, guid: 1c68fbbf6c4790b4f9ea84d744b25fef, type: 3}
-  m_isOn: 1
 --- !u!1 &1428889328
 GameObject:
   m_ObjectHideFlags: 0
@@ -4212,7 +4143,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1566854800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4226,13 +4157,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_allShapes:
-  - {fileID: -6827159539951135767, guid: e988cff17a2576643b41b1c9b67dd852, type: 3}
-  - {fileID: 2350084981023001369, guid: 7f4ba5ad7cd286c49bb37b6ceefd8214, type: 3}
-  - {fileID: 5328191506917534787, guid: 02de20ae6fe5342418e514de5fb86eb9, type: 3}
-  - {fileID: 6577051529869220430, guid: e898f41edceffc545b4c73d829f993f8, type: 3}
-  - {fileID: 5812134917377567434, guid: 16d1047005bbd7e4cb77fc8106927dbe, type: 3}
-  - {fileID: 970722666634991794, guid: 1f19f6f93611a814c9ce561d8cbeadde, type: 3}
-  - {fileID: 8537507903578402051, guid: 674af7485d4d61642b77e4cca7fbbb56, type: 3}
+  - {fileID: -7004761900503115276, guid: e988cff17a2576643b41b1c9b67dd852, type: 3}
+  - {fileID: 6750378451866756541, guid: 7f4ba5ad7cd286c49bb37b6ceefd8214, type: 3}
+  - {fileID: 7793975467821221827, guid: 02de20ae6fe5342418e514de5fb86eb9, type: 3}
+  - {fileID: -1249875225076973793, guid: e898f41edceffc545b4c73d829f993f8, type: 3}
+  - {fileID: -5442790637006852065, guid: 16d1047005bbd7e4cb77fc8106927dbe, type: 3}
+  - {fileID: -1465675952572405953, guid: 1f19f6f93611a814c9ce561d8cbeadde, type: 3}
+  - {fileID: -4930969677196333569, guid: 674af7485d4d61642b77e4cca7fbbb56, type: 3}
+  m_ghostColor: {r: 1, g: 1, b: 1, a: 0.19607843}
 --- !u!4 &1566854801
 Transform:
   m_ObjectHideFlags: 0
@@ -4299,18 +4231,6 @@ MonoBehaviour:
       - m_Target: {fileID: 2004371602}
         m_TargetAssemblyTypeName: nsSoundManager.SctSoundManager, Assembly-CSharp
         m_MethodName: ToggleMusic
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1324773035}
-        m_TargetAssemblyTypeName: nsImageTogglerOnOff.SctImageTogglerOnOff, Assembly-CSharp
-        m_MethodName: ToggleImage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5476,6 +5396,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 798b2bfe10fcfb5458095960cace98f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_isSoundEnabled: 0
+  m_imageTogglerSound: {fileID: 1281618928}
+  m_isMusicEnabled: 0
+  m_imageTogglerMusic: {fileID: 1324773035}
   m_SoundVolume: 0.5
   m_musicVolume: 0.1
   m_musicVolumeMultiplierWhenPaused: 0.2

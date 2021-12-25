@@ -1,25 +1,33 @@
 using UnityEngine;
-using nsShape;
+using nsGhostShape;
+using nsMovingShape;
+using nsShapeProperties;
 
 namespace nsShapeSpawner
 {
     public class SctShapeSpawner : MonoBehaviour
     {
-        [SerializeField] private SctShape[] m_allShapes;
+        [SerializeField] private SctShapeProperties[] m_allShapes;
+        [SerializeField] private Color m_ghostColor;
 
-        private SctShape GetRandomShape()
+        private SctShapeProperties GetRandomShape()
         {
             int i = Random.Range(0, m_allShapes.Length);
             if (m_allShapes[i] == null) Debug.Log("ERROR! Null shape at index " + i + "!");
             return m_allShapes[i];
         }
 
-        public SctShape SpawnRandomShape()
+        public SctMovingShape SpawnRandomShape()
         {
-            //Spawn a new random shape at the position of the spawner
-            SctShape newShape = Instantiate(GetRandomShape(), transform.position, Quaternion.identity, transform);
-            if (newShape == null) Debug.Log("ERROR! Null shape in SpawnRandomShape()!");
-            return newShape;
+            SctShapeProperties randomShapeProperties = GetRandomShape();
+            if (randomShapeProperties == null) Debug.Log("ERROR! Null shape in SpawnRandomShape()!");
+            SctShapeProperties ghostShapeProperties = Instantiate(randomShapeProperties, transform.position, Quaternion.identity, transform);
+            SctShapeProperties movingShapeProperties = Instantiate(randomShapeProperties, transform.position, Quaternion.identity, transform);
+            SctGhostShape newGhostShape = ghostShapeProperties.gameObject.AddComponent<SctGhostShape>();
+            SctMovingShape newMovingShape = movingShapeProperties.gameObject.AddComponent<SctMovingShape>();
+            newMovingShape.GhostColor = m_ghostColor;
+            newMovingShape.SctGhostShape = newGhostShape;
+            return newMovingShape;
         }
     }
 }

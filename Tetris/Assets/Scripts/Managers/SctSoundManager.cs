@@ -4,8 +4,12 @@ namespace nsSoundManager
 {
     public class SctSoundManager : MonoBehaviour
     {
-        private bool m_isMusicEnabled;
-        private bool m_isSoundEnabled;
+        [SerializeField] private bool m_isSoundEnabled;
+        [SerializeField] private nsImageTogglerOnOff.SctImageTogglerOnOff m_imageTogglerSound;
+        [SerializeField] private bool m_isMusicEnabled;
+        [SerializeField] private nsImageTogglerOnOff.SctImageTogglerOnOff m_imageTogglerMusic;
+
+        [Space]
 
         [SerializeField] private float m_SoundVolume;
         [SerializeField] private float m_musicVolume;
@@ -37,6 +41,12 @@ namespace nsSoundManager
             m_musicVolumeMultiplier = 1;
         }
 
+        private void Start()
+        {
+            m_imageTogglerSound.SetImage(m_isSoundEnabled);
+            m_imageTogglerMusic.SetImage(m_isMusicEnabled);
+        }
+
         private void PlayMusic()
         {
             if (!m_musicClip || !m_musicSource) return;
@@ -58,22 +68,13 @@ namespace nsSoundManager
         {
             m_isMusicEnabled = !m_isMusicEnabled;
             CheckIfMusicShouldPlay();
-        }
-
-        public void ToggleMusic(bool state)
-        {
-            m_isMusicEnabled = state;
-            CheckIfMusicShouldPlay();
+            m_imageTogglerMusic.SetImage(m_isMusicEnabled);
         }
 
         public void ToggleSound()
         {
             m_isSoundEnabled = !m_isSoundEnabled;
-        }
-
-        public void ToggleSound(bool state)
-        {
-            m_isSoundEnabled = state;
+            m_imageTogglerSound.SetImage(m_isSoundEnabled);
         }
 
         private void PlayClip(AudioClip clip, float volume)

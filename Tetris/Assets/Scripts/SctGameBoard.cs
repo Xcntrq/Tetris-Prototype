@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace nsGameBoard
@@ -41,7 +42,7 @@ namespace nsGameBoard
             }
         }
 
-        public bool IsPositionValid(nsShape.SctShape shape)
+        public bool IsPositionValid(nsGhostShape.SctGhostShape shape)
         {
             //Check every square of the given shape
             foreach (Transform child in shape.transform)
@@ -64,17 +65,26 @@ namespace nsGameBoard
             return true;
         }
 
-        public void StoreShapeInGrid(nsShape.SctShape shape)
+        public void StoreShapeInGrid(nsMovingShape.SctMovingShape shape)
         {
             if (shape == null) return;
-            //Loops through every square of the shape, puts in the grid
+            //Children squares are going to live with their grampa
+            Transform newParent = shape.transform.parent;
+            List<Transform> children = new List<Transform>();
             foreach (Transform child in shape.transform)
+            {
+                children.Add(child);
+            }
+            //Loops through every square of the shape, puts in the grid
+            foreach (Transform child in children)
             {
                 Vector3Int childPosition = nsVectorf.Vectorf.RoundToInt(child.position);
                 int x = childPosition.x;
                 int y = childPosition.y;
                 m_grid[x, y] = child;
+                child.parent = newParent;
             }
+            Destroy(shape.gameObject);
         }
 
         private bool IsRowCompleteAt(int y)

@@ -91,7 +91,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2337302930398639492}
-  - component: {fileID: -6827159539951135767}
+  - component: {fileID: -7004761900503115276}
   m_Layer: 0
   m_Name: pfShapeI
   m_TagString: Untagged
@@ -117,7 +117,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-6827159539951135767
+--- !u!114 &-7004761900503115276
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4322005095816474700}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 454e069a99a524a409fca1a07e2609e1, type: 3}
+  m_Script: {fileID: 11500000, guid: 8072333914354534c8922c8e4cb2e752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_isRotatable: 1

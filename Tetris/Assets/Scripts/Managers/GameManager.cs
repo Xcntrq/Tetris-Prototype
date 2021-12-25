@@ -12,12 +12,19 @@ public class GameManager : MonoBehaviour
 {
     private nsGameBoard.SctGameBoard m_sctGameBoard;
     private nsShapeSpawner.SctShapeSpawner m_sctShapeSpawner;
-    private nsShape.SctShape m_movingShape;
+    private nsMovingShape.SctMovingShape m_movingShape;
     private nsSoundManager.SctSoundManager m_soundManager;
     private nsScoreManager.SctScoreManager m_scoreManager;
 
+    [SerializeField] private RotationDirection m_rotationDirection;
+    [SerializeField] private nsImageTogglerRotate.SctImageTogglerRotate m_imageTogglerRotate;
+
+    [Space]
+
     [SerializeField] private GameObject m_panelGameOver;
     [SerializeField] private GameObject m_panelGamePaused;
+
+    [Space]
 
     //Minimum amount of time between procs for each key while holding
     [SerializeField] private float m_moveLeftCooldown;
@@ -52,8 +59,6 @@ public class GameManager : MonoBehaviour
     public event Action<int, bool> OnRowClear;
     public event Action<bool> OnPauseToggled;
 
-    private RotationDirection m_rotationDirection;
-
     private void Awake()
     {
         m_sctGameBoard = FindObjectOfType<nsGameBoard.SctGameBoard>();
@@ -85,6 +90,7 @@ public class GameManager : MonoBehaviour
             m_timeOfNextShapeDrop = Time.time + m_shapeDropCooldown;
         }
         IsAnyRequiredObjectNull(true);
+        m_imageTogglerRotate.SetImage(m_rotationDirection);
     }
 
     private void Update()
@@ -260,11 +266,7 @@ public class GameManager : MonoBehaviour
                 m_rotationDirection = RotationDirection.CW;
                 break;
         }
-    }
-
-    public void ToggleRotationDirection(RotationDirection rotationDirection)
-    {
-        m_rotationDirection = rotationDirection;
+        m_imageTogglerRotate.SetImage(m_rotationDirection);
     }
 
     public void TogglePause()

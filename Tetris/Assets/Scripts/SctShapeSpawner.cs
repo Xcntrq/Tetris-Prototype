@@ -9,6 +9,19 @@ namespace nsShapeSpawner
     {
         [SerializeField] private SctShapeProperties[] m_allShapes;
         [SerializeField] private Color m_ghostColor;
+        [SerializeField] private Transform[] m_shapeQueueSlots;
+        [SerializeField] private Vector3 m_shapeQueueScaler;
+        private SctShapeProperties[] m_shapeQueue = new SctShapeProperties[3];
+
+        private void Start()
+        {
+            bool isQueueFull = true;
+            for (int i = 0; i < m_shapeQueue.Length; i++)
+            {
+                if (m_shapeQueue[i] == null) isQueueFull = false;
+            }
+            if (isQueueFull == false) InitializeQueue();
+        }
 
         private SctShapeProperties GetRandomShape()
         {
@@ -17,17 +30,53 @@ namespace nsShapeSpawner
             return m_allShapes[i];
         }
 
-        public SctMovingShape SpawnRandomShape()
+        public SctMovingShape GetShape()
         {
-            SctShapeProperties randomShapeProperties = GetRandomShape();
-            if (randomShapeProperties == null) Debug.Log("ERROR! Null shape in SpawnRandomShape()!");
-            SctShapeProperties ghostShapeProperties = Instantiate(randomShapeProperties, transform.position, Quaternion.identity, transform);
-            SctShapeProperties movingShapeProperties = Instantiate(randomShapeProperties, transform.position, Quaternion.identity, transform);
+            bool isQueueFull = true;
+            for (int i = 0; i < m_shapeQueue.Length; i++)
+            {
+                if (m_shapeQueue[i] == null) isQueueFull = false;
+            }
+            if (isQueueFull == false) InitializeQueue();
+
+            SctShapeProperties movingShapeProperties = m_shapeQueue[0];
+            for (int i = 0; i < m_shapeQueue.Length - 1; i++)
+            {
+                m_shapeQueue[i] = m_shapeQueue[i + 1];
+                m_shapeQueue[i].transform.parent = m_shapeQueueSlots[i].transform;
+                m_shapeQueue[i].transform.localPosition = Vector3.zero;
+            }
+            InitializeQueueSlot(2);
+
+            movingShapeProperties.transform.parent = transform;
+            movingShapeProperties.transform.localPosition = Vector3.zero;
+            movingShapeProperties.transform.localScale = Vector3.one;
+
+            SctShapeProperties ghostShapeProperties = Instantiate(movingShapeProperties);
             SctGhostShape newGhostShape = ghostShapeProperties.gameObject.AddComponent<SctGhostShape>();
             SctMovingShape newMovingShape = movingShapeProperties.gameObject.AddComponent<SctMovingShape>();
             newMovingShape.GhostColor = m_ghostColor;
             newMovingShape.SctGhostShape = newGhostShape;
             return newMovingShape;
+        }
+
+        private void InitializeQueue()
+        {
+            for (int i = 0; i < m_shapeQueue.Length; i++)
+            {
+                if (m_shapeQueue[i] == null)
+                {
+                    InitializeQueueSlot(i);
+                }
+            }
+        }
+
+        private void InitializeQueueSlot(int i)
+        {
+            m_shapeQueue[i] = Instantiate(GetRandomShape(), m_shapeQueueSlots[i].transform);
+            m_shapeQueue[i].transform.localPosition = Vector3.zero;
+            m_shapeQueue[i].transform.rotation = Quaternion.identity;
+            m_shapeQueue[i].transform.localScale = m_shapeQueueScaler;
         }
     }
 }

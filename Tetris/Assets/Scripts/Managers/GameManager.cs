@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
         {
             //Shapes spawn relative to the Transform of the Spawner, so just in case, round it with Vectorf
             m_sctShapeSpawner.transform.position = nsVectorf.Vectorf.RoundToFloat(m_sctShapeSpawner.transform.position);
-            if (m_movingShape == null) m_movingShape = m_sctShapeSpawner.SpawnRandomShape();
+            if (m_movingShape == null) m_movingShape = m_sctShapeSpawner.GetShape();
             //Assuming a new shape has been created, it shouldn't start falling down immediately
             m_timeOfNextShapeDrop = Time.time + m_shapeDropCooldown;
         }
@@ -236,7 +236,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 //Otherwise we're gonna need a new shape, which is also not allowed to drop immediately, hence the cooldown
-                m_movingShape = m_sctShapeSpawner.SpawnRandomShape();
+                m_movingShape = m_sctShapeSpawner.GetShape();
                 m_timeOfNextShapeDrop = Time.time + m_shapeDropCooldown;
                 //If the player is holding down any buttons, the new shape shouldn't be affected
                 m_isAllowedToHold = false;

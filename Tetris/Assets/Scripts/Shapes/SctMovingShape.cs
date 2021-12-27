@@ -1,10 +1,11 @@
 using UnityEngine;
+using nsShapeProperties;
 
 namespace nsMovingShape
 {
     public class SctMovingShape : nsGhostShape.SctGhostShape
     {
-        private nsShapeProperties.SctShapeProperties m_sctShapeProperties;
+        private SctShapeProperties m_sctShapeProperties;
         private nsGhostShape.SctGhostShape m_sctGhostShape;
         private nsGameBoard.SctGameBoard m_sctGameBoard;
         private Color m_ghostColor;
@@ -43,13 +44,13 @@ namespace nsMovingShape
 
         private void Awake()
         {
-            m_sctShapeProperties = GetComponent<nsShapeProperties.SctShapeProperties>();
+            m_sctShapeProperties = GetComponent<SctShapeProperties>();
             m_sctGameBoard = FindObjectOfType<nsGameBoard.SctGameBoard>();
         }
 
         private void OnDestroy()
         {
-            Destroy(m_sctGhostShape.gameObject);
+            if (m_sctGhostShape != null) Destroy(m_sctGhostShape.gameObject);
         }
 
         public void MoveLeft()
@@ -78,6 +79,15 @@ namespace nsMovingShape
             if (rotationDirection == RotationDirection.CW) transform.Rotate(0, 0, 90);
             if (rotationDirection == RotationDirection.CCW) transform.Rotate(0, 0, -90);
             UpdateGhostShape();
+        }
+
+        public SctShapeProperties ToSctShapeProperties()
+        {
+            var result = gameObject.GetComponent<SctShapeProperties>();
+            //Destroys the GhostShape as well as the MovingShape itself, no need to call Destroy(m_sctGhostShape.gameObject);
+            Destroy(this);
+            //GameObject without the MovingShape component is returned
+            return result;
         }
     }
 }

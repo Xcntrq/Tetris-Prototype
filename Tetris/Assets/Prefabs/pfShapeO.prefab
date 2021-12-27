@@ -376,3 +376,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_isRotatable: 0
+  m_centerOffset: {x: 0.5, y: -0.5, z: 0}

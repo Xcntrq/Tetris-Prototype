@@ -12,10 +12,12 @@ namespace nsGameBoard
 
         //Stores shapes that have stopped moving
         private Transform[,] m_grid;
+        private nsParticlePlayer.SctParticlePlayer m_sctParticlePlayer;
 
         private void Awake()
         {
             m_grid = new Transform[m_width, m_height];
+            m_sctParticlePlayer = GetComponentInChildren<nsParticlePlayer.SctParticlePlayer>();
         }
 
         private void Start()
@@ -137,6 +139,7 @@ namespace nsGameBoard
                 {
                     rowsCleared++;
                     ClearRowAt(y);
+                    TriggerFxRowClear(y);
                     ShiftRowsDownFrom(y + 1);
                     y--;
                 }
@@ -155,6 +158,13 @@ namespace nsGameBoard
                 }
             }
             return false;
+        }
+
+        private void TriggerFxRowClear(int y)
+        {
+            if (m_sctParticlePlayer == null) return;
+            m_sctParticlePlayer.transform.position = new Vector3(0, y, m_sctParticlePlayer.transform.position.z);
+            m_sctParticlePlayer.Play();
         }
     }
 }

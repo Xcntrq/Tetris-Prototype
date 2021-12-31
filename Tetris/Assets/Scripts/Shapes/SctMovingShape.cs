@@ -1,5 +1,6 @@
 using UnityEngine;
 using nsShapeProperties;
+using nsGameBoard;
 
 namespace nsMovingShape
 {
@@ -7,7 +8,7 @@ namespace nsMovingShape
     {
         private SctShapeProperties m_sctShapeProperties;
         private nsGhostShape.SctGhostShape m_sctGhostShape;
-        private nsGameBoard.SctGameBoard m_sctGameBoard;
+        private SctGameBoard m_sctGameBoard;
         private Color m_ghostColor;
 
         public Color GhostColor
@@ -45,11 +46,13 @@ namespace nsMovingShape
         private void Awake()
         {
             m_sctShapeProperties = GetComponent<SctShapeProperties>();
-            m_sctGameBoard = FindObjectOfType<nsGameBoard.SctGameBoard>();
+            m_sctGameBoard = FindObjectOfType<SctGameBoard>();
+            m_sctGameBoard.OnRowClear += UpdateGhostShape;
         }
 
         private void OnDestroy()
         {
+            m_sctGameBoard.OnRowClear -= UpdateGhostShape;
             if (m_sctGhostShape != null) Destroy(m_sctGhostShape.gameObject);
         }
 

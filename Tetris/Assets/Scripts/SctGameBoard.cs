@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,19 +7,22 @@ namespace nsGameBoard
 {
     public class SctGameBoard : MonoBehaviour
     {
+        [SerializeField] private Transform m_emptySquaresParent;
         [SerializeField] private Transform m_emptySquare;
         [SerializeField] private int m_header;
         [SerializeField] private int m_height;
         [SerializeField] private int m_width;
+        [SerializeField] private float m_delayBeforeRowsDie;
 
         //Stores shapes that have stopped moving
         private Transform[,] m_grid;
-        private nsParticlePlayer.SctParticlePlayer m_sctParticlePlayer;
+        private nsParticleRow.SctParticleRow[] m_sctParticleRows;
+        public event Action OnRowClear;
 
         private void Awake()
         {
             m_grid = new Transform[m_width, m_height];
-            m_sctParticlePlayer = GetComponentInChildren<nsParticlePlayer.SctParticlePlayer>();
+            m_sctParticleRows = GetComponentsInChildren<nsParticleRow.SctParticleRow>();
         }
 
         private void Start()
@@ -39,7 +44,7 @@ namespace nsGameBoard
                 {
                     Transform newEmptySquare = Instantiate(m_emptySquare, new Vector3(x, y, 0), Quaternion.identity);
                     newEmptySquare.name = "Square at " + x.ToString() + "," + y.ToString();
-                    newEmptySquare.parent = transform;
+                    newEmptySquare.parent = m_emptySquaresParent;
                 }
             }
         }
@@ -132,19 +137,37 @@ namespace nsGameBoard
 
         public int ClearAllCompleteRows()
         {
-            int rowsCleared = 0;
+            List<int> rowsToClear = new List<int>();
             for (int y = 0; y < m_height; y++)
             {
                 if (IsRowCompleteAt(y))
                 {
-                    rowsCleared++;
-                    ClearRowAt(y);
-                    TriggerFxRowClear(y);
-                    ShiftRowsDownFrom(y + 1);
-                    y--;
+                    TriggerFxRowClear(rowsToClear.Count, y);
+                    rowsToClear.Add(y);
                 }
             }
-            return rowsCleared;
+            if (rowsToClear.Count > 0) StartCoroutine(ClearAllCompleteRowsRoutine(rowsToClear));
+            return rowsToClear.Count;
+        }
+
+        private void TriggerFxRowClear(int i, int y)
+        {
+            if (m_sctParticleRows == null) return;
+            m_sctParticleRows[i].transform.position = new Vector3(0, y, m_sctParticleRows[i].transform.position.z);
+            m_sctParticleRows[i].Play();
+        }
+
+        private IEnumerator ClearAllCompleteRowsRoutine(List<int> rowsToClear)
+        {
+            yield return new WaitForSeconds(m_delayBeforeRowsDie);
+            int rowsCount = rowsToClear.Count;
+            for (int i = 0; i < rowsCount; i++)
+            {
+                int rowIndex = rowsToClear[i] - i;
+                ClearRowAt(rowIndex);
+                ShiftRowsDownFrom(rowIndex + 1);
+            }
+            OnRowClear?.Invoke();
         }
 
         public bool IsShapeInHeaderSpace()
@@ -158,13 +181,6 @@ namespace nsGameBoard
                 }
             }
             return false;
-        }
-
-        private void TriggerFxRowClear(int y)
-        {
-            if (m_sctParticlePlayer == null) return;
-            m_sctParticlePlayer.transform.position = new Vector3(0, y, m_sctParticlePlayer.transform.position.z);
-            m_sctParticlePlayer.Play();
         }
     }
 }

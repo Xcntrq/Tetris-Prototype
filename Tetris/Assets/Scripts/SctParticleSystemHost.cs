@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace nsParticleRow
+namespace nsParticleSystemHost
 {
-    public class SctParticleRow : MonoBehaviour
+    public class SctParticleSystemHost : MonoBehaviour
     {
         private ParticleSystem[] m_particleSystems;
 

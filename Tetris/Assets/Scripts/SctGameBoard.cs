@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using nsParticleSystemHost;
 
 namespace nsGameBoard
 {
@@ -16,13 +17,22 @@ namespace nsGameBoard
 
         //Stores shapes that have stopped moving
         private Transform[,] m_grid;
-        private nsParticleRow.SctParticleRow[] m_sctParticleRows;
+        private List<SctParticleSystemHost> m_sctParticleSystemHostRows;
+        private List<SctParticleSystemHost> m_sctParticleSystemHostSquares;
         public event Action OnRowClear;
 
         private void Awake()
         {
             m_grid = new Transform[m_width, m_height];
-            m_sctParticleRows = GetComponentsInChildren<nsParticleRow.SctParticleRow>();
+            m_sctParticleSystemHostRows = new List<SctParticleSystemHost>();
+            m_sctParticleSystemHostSquares = new List<SctParticleSystemHost>();
+            foreach (Transform child in transform)
+            {
+                SctParticleSystemHost sctParticleSystemHost = child.GetComponent<SctParticleSystemHost>();
+                if (sctParticleSystemHost == null) continue;
+                if (child.CompareTag("FxRow")) m_sctParticleSystemHostRows.Add(sctParticleSystemHost);
+                if (child.CompareTag("FxSquare")) m_sctParticleSystemHostSquares.Add(sctParticleSystemHost);
+            }
         }
 
         private void Start()
@@ -91,6 +101,17 @@ namespace nsGameBoard
                 m_grid[x, y] = child;
                 child.parent = newParent;
             }
+            //Triggering the particle effect afterwards because we need to know if any rows have been filled
+            for (int i = 0; i < children.Count; i++)
+            {
+                Vector3Int childPosition = nsVectorf.Vectorf.RoundToInt(children[i].position);
+                int y = childPosition.y;
+                if ((i < m_sctParticleSystemHostSquares.Count) && (IsRowCompleteAt(y) == false))
+                {
+                    m_sctParticleSystemHostSquares[i].transform.position = children[i].position;
+                    m_sctParticleSystemHostSquares[i].Play();
+                }
+            }
             Destroy(shape.gameObject);
         }
 
@@ -152,9 +173,9 @@ namespace nsGameBoard
 
         private void TriggerFxRowClear(int i, int y)
         {
-            if (m_sctParticleRows == null) return;
-            m_sctParticleRows[i].transform.position = new Vector3(0, y, m_sctParticleRows[i].transform.position.z);
-            m_sctParticleRows[i].Play();
+            if (m_sctParticleSystemHostRows == null) return;
+            m_sctParticleSystemHostRows[i].transform.position = new Vector3(0, y, m_sctParticleSystemHostRows[i].transform.position.z);
+            m_sctParticleSystemHostRows[i].Play();
         }
 
         private IEnumerator ClearAllCompleteRowsRoutine(List<int> rowsToClear)

@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 718590088385274644}
   - component: {fileID: 718590088385274651}
   - component: {fileID: 718590088385274650}
+  - component: {fileID: 3858065845950411017}
   m_Layer: 0
   m_Name: FxSquareGlowing
-  m_TagString: Untagged
+  m_TagString: FxSquare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4949,6 +4950,18 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &3858065845950411017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 718590088385274649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4ad956e99464ac4281b01d4303c332e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &718590088552848965
 GameObject:
   m_ObjectHideFlags: 0

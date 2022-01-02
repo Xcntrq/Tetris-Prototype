@@ -427,7 +427,7 @@ MonoBehaviour:
   m_moveRightCooldown: 0.15
   m_moveDownCooldown: 0.03
   m_rotateCooldown: 0.3
-  m_shapeDropCooldown: 0.6
+  m_shapeDropInterval: 0.6
 --- !u!4 &60420272
 Transform:
   m_ObjectHideFlags: 0

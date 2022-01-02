@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float m_rotateCooldown;
 
     //Time interval used to drop the current moving shape by 1 tile automatically
-    [SerializeField] private float m_shapeDropCooldown;
+    [SerializeField] private float m_shapeDropInterval;
     private float m_shapeDropCooldownAtStart;
 
     //Absolute timestamp when each key can proc
@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
         m_isGameOver = false;
 
         OnGameOver += HandleGameOver;
-        m_shapeDropCooldownAtStart = m_shapeDropCooldown;
+        m_shapeDropCooldownAtStart = m_shapeDropInterval;
     }
 
     private void Start()
@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
             m_sctShapeSpawner.transform.position = nsVectorf.Vectorf.RoundToFloat(m_sctShapeSpawner.transform.position);
             if (m_movingShape == null) m_movingShape = m_sctShapeSpawner.GetNextShape();
             //Assuming a new shape has been created, it shouldn't start falling down immediately
-            m_timeOfNextShapeDrop = Time.time + m_shapeDropCooldown;
+            m_timeOfNextShapeDrop = Time.time + m_shapeDropInterval;
         }
         IsAnyRequiredObjectNull(true);
         m_imageTogglerRotate.SetImage(m_rotationDirection);
@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
         if (Input.anyKey) HandleInput();
         if (Time.time > m_timeOfNextShapeDrop)
         {
-            m_timeOfNextShapeDrop = Time.time + m_shapeDropCooldown;
+            m_timeOfNextShapeDrop = Time.time + m_shapeDropInterval;
             HandleShapeDrop();
         }
     }
@@ -228,7 +228,7 @@ public class GameManager : MonoBehaviour
             {
                 bool hasLeveledUp = m_scoreManager.AddScore(rowsCleared);
                 OnRowClear?.Invoke(rowsCleared, hasLeveledUp);
-                if (hasLeveledUp) m_shapeDropCooldown = Mathf.Clamp(m_shapeDropCooldownAtStart - 0.05f * (m_scoreManager.Level - 1), 0.05f, 1f);
+                if (hasLeveledUp) m_shapeDropInterval = Mathf.Clamp(m_shapeDropCooldownAtStart - 0.05f * (m_scoreManager.Level - 1), 0.05f, 1f);
             }
             else
             {
@@ -244,7 +244,7 @@ public class GameManager : MonoBehaviour
             {
                 //Otherwise we're gonna need a new shape, which is also not allowed to drop immediately, hence the cooldown
                 m_movingShape = m_sctShapeSpawner.GetNextShape();
-                m_timeOfNextShapeDrop = Time.time + m_shapeDropCooldown;
+                m_timeOfNextShapeDrop = Time.time + m_shapeDropInterval;
                 //If the player is holding down any buttons, the new shape shouldn't be affected
                 m_isAllowedToHold = false;
             }
@@ -292,7 +292,7 @@ public class GameManager : MonoBehaviour
         if (m_movingShape == null)
         {
             m_movingShape = m_sctShapeSpawner.GetNextShape();
-            m_timeOfNextShapeDrop = Time.time + m_shapeDropCooldown;
+            m_timeOfNextShapeDrop = Time.time + m_shapeDropInterval;
             //If the player is holding down any buttons, the new shape shouldn't be affected
             m_isAllowedToHold = false;
         }

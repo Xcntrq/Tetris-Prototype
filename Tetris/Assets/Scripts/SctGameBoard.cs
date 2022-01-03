@@ -101,7 +101,7 @@ namespace nsGameBoard
                 m_grid[x, y] = child;
                 child.parent = newParent;
             }
-            //Triggering the particle effect afterwards because we need to know if any rows have been filled
+            //Triggering the particle effect afterwards because we need to know if any rows have been filled so the square landing and the row clearing effects don't overlap
             for (int i = 0; i < children.Count; i++)
             {
                 Vector3Int childPosition = nsVectorf.Vectorf.RoundToInt(children[i].position);

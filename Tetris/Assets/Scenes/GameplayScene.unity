@@ -1905,7 +1905,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &558016534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1919,7 +1919,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_allShapes:
-  - {fileID: 8358989688900659113, guid: 1aa97fe39db2e6c43a0a80ff290ef99b, type: 3}
+  - {fileID: -7995469593441831369, guid: 5b55faf70194b534c83c80387239d8dd, type: 3}
   m_ghostColor: {r: 1, g: 1, b: 1, a: 0.49019608}
   m_shapeQueueSlots:
   - {fileID: 1715335409}
@@ -4846,7 +4846,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1566854800
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -15,6 +15,12 @@ namespace nsShapeHolder
         private Transform m_parent;
         private Quaternion m_localRotation;
         private Vector3 m_localScale;
+        private nsGameBoard.SctGameBoard m_sctGameBoard;
+
+        private void Awake()
+        {
+            m_sctGameBoard = FindObjectOfType<nsGameBoard.SctGameBoard>();
+        }
 
         public SctMovingShape HoldShape(SctShapeProperties shapePropertiesToStore)
         {
@@ -33,6 +39,10 @@ namespace nsShapeHolder
                 ghostShapeProperties.transform.localScale = m_localScale;
                 SctGhostShape newGhostShape = ghostShapeProperties.gameObject.AddComponent<SctGhostShape>();
                 currentlyHeldShape = currentlyHeldShapeProperties.gameObject.AddComponent<SctMovingShape>();
+                while (m_sctGameBoard.IsPositionValid(currentlyHeldShape) == false)
+                {
+                    currentlyHeldShapeProperties.transform.Translate(Vector3.up, Space.World);
+                }
                 currentlyHeldShape.GhostColor = m_ghostColor;
                 currentlyHeldShape.SctGhostShape = newGhostShape;
             }
@@ -51,7 +61,6 @@ namespace nsShapeHolder
 
             m_sctShapeProperties.transform.rotation = m_localRotation;
             m_sctShapeProperties.transform.localPosition = rotatedCenterOffset;
-
             m_sctShapeProperties.transform.localScale = new Vector3(m_shapeScaleFactor, m_shapeScaleFactor, 1);
 
             return currentlyHeldShape;

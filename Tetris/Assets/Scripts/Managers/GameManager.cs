@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public enum RotationDirection
 {
@@ -36,6 +37,8 @@ public class GameManager : MonoBehaviour
     //Time interval used to drop the current moving shape by 1 tile automatically
     [SerializeField] private float m_shapeDropInterval;
     private float m_shapeDropCooldownAtStart;
+
+    [SerializeField] private Text m_textStart;
 
     //Absolute timestamp when each key can proc
     private float m_timeOfNextMoveLeft;
@@ -281,6 +284,7 @@ public class GameManager : MonoBehaviour
         if (m_isGameOver) return;
         if (!m_panelGamePaused) return;
         m_isGamePaused = !m_isGamePaused;
+        m_textStart.gameObject.SetActive(!m_isGamePaused);
         m_panelGamePaused.SetActive(m_isGamePaused);
         OnPauseToggled?.Invoke(m_isGamePaused);
         Time.timeScale = m_isGamePaused ? 0 : 1;

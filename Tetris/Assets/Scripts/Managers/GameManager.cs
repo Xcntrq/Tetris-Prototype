@@ -90,9 +90,6 @@ public class GameManager : MonoBehaviour
         {
             //Shapes spawn relative to the Transform of the Spawner, so just in case, round it with Vectorf
             m_sctShapeSpawner.transform.position = nsVectorf.Vectorf.RoundToFloat(m_sctShapeSpawner.transform.position);
-            if (m_movingShape == null) m_movingShape = m_sctShapeSpawner.GetNextShape();
-            //Assuming a new shape has been created, it shouldn't start falling down immediately
-            m_timeOfNextShapeDrop = Time.time + m_shapeDropInterval;
         }
         IsAnyRequiredObjectNull(true);
         m_imageTogglerRotate.SetImage(m_rotationDirection);
@@ -101,6 +98,14 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (IsAnyRequiredObjectNull(false) || m_isGameOver || m_isGamePaused) return;
+        if (m_movingShape == null)
+        {
+            m_movingShape = m_sctShapeSpawner.GetNextShape();
+            //Assuming a new shape has been created, it shouldn't start falling down immediately
+            m_timeOfNextShapeDrop = Time.time + m_shapeDropInterval;
+            //If the player is holding down any buttons, a freshly spawned shape shouldn't be affected
+            m_isAllowedToHold = false;
+        }
         if (Input.anyKey) HandleInput();
         if (Time.time > m_timeOfNextShapeDrop)
         {
@@ -121,11 +126,6 @@ public class GameManager : MonoBehaviour
         {
             result = true;
             if (isDebugLogNeeded) Debug.Log("ERROR! SctShapeSpawner not found!");
-        }
-        if (m_movingShape == null)
-        {
-            result = true;
-            if (isDebugLogNeeded) Debug.Log("ERROR! MovingShape not found!");
         }
         if (m_panelGameOver == null)
         {
@@ -243,14 +243,6 @@ public class GameManager : MonoBehaviour
             {
                 OnGameOver?.Invoke();
             }
-            else
-            {
-                //Otherwise we're gonna need a new shape, which is also not allowed to drop immediately, hence the cooldown
-                m_movingShape = m_sctShapeSpawner.GetNextShape();
-                m_timeOfNextShapeDrop = Time.time + m_shapeDropInterval;
-                //If the player is holding down any buttons, the new shape shouldn't be affected
-                m_isAllowedToHold = false;
-            }
         }
     }
 
@@ -293,12 +285,5 @@ public class GameManager : MonoBehaviour
     public void HandleShapeHolding()
     {
         m_movingShape = m_shapeHolder.HoldShape(m_movingShape.ToSctShapeProperties());
-        if (m_movingShape == null)
-        {
-            m_movingShape = m_sctShapeSpawner.GetNextShape();
-            m_timeOfNextShapeDrop = Time.time + m_shapeDropInterval;
-            //If the player is holding down any buttons, the new shape shouldn't be affected
-            m_isAllowedToHold = false;
-        }
     }
 }

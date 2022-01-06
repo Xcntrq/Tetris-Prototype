@@ -167,13 +167,14 @@ namespace nsGameBoard
                     rowsToClear.Add(y);
                 }
             }
-            if (rowsToClear.Count > 0) StartCoroutine(ClearAllCompleteRowsRoutine(rowsToClear));
+            StartCoroutine(ClearAllCompleteRowsRoutine(rowsToClear));
             return rowsToClear.Count;
         }
 
         private void TriggerFxRowClear(int i, int y)
         {
             if (m_sctParticleSystemHostRows == null) return;
+            if (i >= m_sctParticleSystemHostRows.Count) return;
             m_sctParticleSystemHostRows[i].transform.position = new Vector3(0, y, m_sctParticleSystemHostRows[i].transform.position.z);
             m_sctParticleSystemHostRows[i].Play();
         }

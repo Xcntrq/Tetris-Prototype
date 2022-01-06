@@ -82,6 +82,8 @@ public class GameManager : MonoBehaviour
 
         OnGameOver += HandleGameOver;
         m_shapeDropCooldownAtStart = m_shapeDropInterval;
+
+        m_sctGameBoard.OnRowClear += SctGameBoard_OnRowClear;
     }
 
     private void Start()
@@ -98,7 +100,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (IsAnyRequiredObjectNull(false) || m_isGameOver || m_isGamePaused) return;
-        if (m_movingShape == null)
+        if ((m_movingShape == null) && (m_sctGameBoard.IsShapeInHeaderSpace() == false))
         {
             m_movingShape = m_sctShapeSpawner.GetNextShape();
             //Assuming a new shape has been created, it shouldn't start falling down immediately
@@ -106,6 +108,7 @@ public class GameManager : MonoBehaviour
             //If the player is holding down any buttons, a freshly spawned shape shouldn't be affected
             m_isAllowedToHold = false;
         }
+        if (m_movingShape == null) return;
         if (Input.anyKey) HandleInput();
         if (Time.time > m_timeOfNextShapeDrop)
         {
@@ -237,17 +240,12 @@ public class GameManager : MonoBehaviour
             {
                 OnShapeDrop?.Invoke();
             }
-            //If the shape landed above the visible grid, it's a game over
-            m_isGameOver = m_sctGameBoard.IsShapeInHeaderSpace();
-            if (m_isGameOver)
-            {
-                OnGameOver?.Invoke();
-            }
         }
     }
 
     private void HandleGameOver()
     {
+        if (m_movingShape != null) Destroy(m_movingShape.gameObject);
         m_panelGameOver.SetActive(true);
     }
 
@@ -285,5 +283,15 @@ public class GameManager : MonoBehaviour
     public void HandleShapeHolding()
     {
         m_movingShape = m_shapeHolder.HoldShape(m_movingShape.ToSctShapeProperties());
+    }
+
+    public void SctGameBoard_OnRowClear()
+    {
+        //If the shape landed above the visible grid, it's a game over
+        m_isGameOver = m_sctGameBoard.IsShapeInHeaderSpace();
+        if (m_isGameOver)
+        {
+            OnGameOver?.Invoke();
+        }
     }
 }

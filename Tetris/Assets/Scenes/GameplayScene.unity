@@ -6348,7 +6348,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_isSoundEnabled: 0
   m_imageTogglerSound: {fileID: 1281618928}
-  m_isMusicEnabled: 0
+  m_isMusicEnabled: 1
   m_imageTogglerMusic: {fileID: 1324773035}
   m_SoundVolume: 0.5
   m_musicVolume: 0.1

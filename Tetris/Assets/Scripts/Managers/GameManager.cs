@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     private nsSoundManager.SctSoundManager m_soundManager;
     private nsScoreManager.SctScoreManager m_scoreManager;
     private nsShapeHolder.SctShapeHolder m_shapeHolder;
+    private nsInputManager.SctInputManager m_inputManager;
 
     [SerializeField] private RotationDirection m_rotationDirection;
     [SerializeField] private nsImageTogglerRotate.SctImageTogglerRotate m_imageTogglerRotate;
@@ -28,29 +29,14 @@ public class GameManager : MonoBehaviour
 
     [Space]
 
-    //Minimum amount of time between procs for each key while holding
-    [SerializeField] private float m_moveLeftCooldown;
-    [SerializeField] private float m_moveRightCooldown;
-    [SerializeField] private float m_moveDownCooldown;
-    [SerializeField] private float m_rotateCooldown;
-
     //Time interval used to drop the current moving shape by 1 tile automatically
     [SerializeField] private float m_shapeDropInterval;
     private float m_shapeDropCooldownAtStart;
 
     [SerializeField] private Text m_textStart;
 
-    //Absolute timestamp when each key can proc
-    private float m_timeOfNextMoveLeft;
-    private float m_timeOfNextMoveRight;
-    private float m_timeOfNextMoveDown;
-    private float m_timeOfNextRotate;
-
     //Absolute timestamp when the current moving shape has to be dropped by 1 tile automatically
     private float m_timeOfNextShapeDrop;
-
-    //Prevents any held key from working on the next spawned shape
-    private bool m_isAllowedToHold;
 
     //Do we need a comment on that one? Srsly?
     private bool m_isGameOver;
@@ -58,10 +44,10 @@ public class GameManager : MonoBehaviour
 
     public event Action OnGameOver;
     public event Action OnShapeDrop;
-    public event Action OnShapeMoveError;
-    public event Action OnShapeMoveSuccess;
     public event Action<int, bool> OnRowClear;
     public event Action<bool> OnPauseToggled;
+
+    public RotationDirection GetRotationDirection { get { return m_rotationDirection; } }
 
     private void Awake()
     {
@@ -70,14 +56,8 @@ public class GameManager : MonoBehaviour
         m_soundManager = FindObjectOfType<nsSoundManager.SctSoundManager>();
         m_scoreManager = FindObjectOfType<nsScoreManager.SctScoreManager>();
         m_shapeHolder = FindObjectOfType<nsShapeHolder.SctShapeHolder>();
+        m_inputManager = FindObjectOfType<nsInputManager.SctInputManager>();
 
-        //Any key is allowed to proc as soon as the game has started
-        m_timeOfNextMoveLeft = Time.time;
-        m_timeOfNextMoveRight = Time.time;
-        m_timeOfNextMoveDown = Time.time;
-        m_timeOfNextRotate = Time.time;
-
-        m_isAllowedToHold = false;
         m_isGameOver = false;
 
         OnGameOver += HandleGameOver;
@@ -106,10 +86,10 @@ public class GameManager : MonoBehaviour
             //Assuming a new shape has been created, it shouldn't start falling down immediately
             m_timeOfNextShapeDrop = Time.time + m_shapeDropInterval;
             //If the player is holding down any buttons, a freshly spawned shape shouldn't be affected
-            m_isAllowedToHold = false;
+            m_inputManager.IsAllowedToHold = false;
         }
         if (m_movingShape == null) return;
-        if (Input.anyKey) HandleInput();
+        if (Input.anyKey) m_inputManager.HandleInput(m_movingShape);
         if (Time.time > m_timeOfNextShapeDrop)
         {
             m_timeOfNextShapeDrop = Time.time + m_shapeDropInterval;
@@ -150,6 +130,11 @@ public class GameManager : MonoBehaviour
             result = true;
             if (isDebugLogNeeded) Debug.Log("ERROR! ScoreManager not found!");
         }
+        if (m_inputManager == null)
+        {
+            result = true;
+            if (isDebugLogNeeded) Debug.Log("ERROR! InputManager not found!");
+        }
         if (m_shapeHolder == null)
         {
             result = true;
@@ -158,68 +143,7 @@ public class GameManager : MonoBehaviour
         return result;
     }
 
-    private void HandleInput()
-    {
-        //If held down, the key procs only if enough time has passed and if it's still applied to the same shape
-        //Otherwise you have let go of the key and press it again, this also allows for faster movements and rotations
-        //m_isAllowedToHold mainly helps the "down" key, because if you quickly drop one shape, you don't wanna drop the next one too
-        if ((Input.GetButton("MoveLeft") && (Time.time > m_timeOfNextMoveLeft) && m_isAllowedToHold) || Input.GetButtonDown("MoveLeft"))
-        {
-            m_timeOfNextMoveLeft = Time.time + m_moveLeftCooldown;
-            //Once any key has been pressed for the current shape, it allows to hold any other key for that shape
-            m_isAllowedToHold = true;
-            //Try moving it left
-            m_movingShape.MoveLeft();
-            //If the new position is against the rules of tetris, just move it back to where it was
-            if (m_sctGameBoard.IsPositionValid(m_movingShape))
-            {
-                OnShapeMoveSuccess?.Invoke();
-            }
-            else
-            {
-                OnShapeMoveError?.Invoke();
-                m_movingShape.MoveRight();
-            }
-        }
-        else if ((Input.GetButton("MoveRight") && (Time.time > m_timeOfNextMoveRight) && m_isAllowedToHold) || Input.GetButtonDown("MoveRight"))
-        {
-            m_timeOfNextMoveRight = Time.time + m_moveRightCooldown;
-            m_isAllowedToHold = true;
-            m_movingShape.MoveRight();
-            if (m_sctGameBoard.IsPositionValid(m_movingShape))
-            {
-                OnShapeMoveSuccess?.Invoke();
-            }
-            else
-            {
-                OnShapeMoveError?.Invoke();
-                m_movingShape.MoveLeft();
-            }
-        }
-        if ((Input.GetButton("MoveDown") && (Time.time > m_timeOfNextMoveDown) && m_isAllowedToHold) || Input.GetButtonDown("MoveDown"))
-        {
-            m_timeOfNextMoveDown = Time.time + m_moveDownCooldown;
-            m_isAllowedToHold = true;
-            HandleShapeDrop();
-        }
-        if ((Input.GetButton("Rotate") && (Time.time > m_timeOfNextRotate) && m_isAllowedToHold) || Input.GetButtonDown("Rotate"))
-        {
-            m_timeOfNextRotate = Time.time + m_rotateCooldown;
-            m_isAllowedToHold = true;
-            m_movingShape.Rotate(m_rotationDirection);
-            if (m_sctGameBoard.IsPositionValid(m_movingShape))
-            {
-                OnShapeMoveSuccess?.Invoke();
-            }
-            else
-            {
-                OnShapeMoveError?.Invoke();
-                m_movingShape.RotateOppositeDirection(m_rotationDirection);
-            }
-        }
-    }
-
-    private void HandleShapeDrop()
+    public void HandleShapeDrop()
     {
         //Try moving it down
         m_movingShape.MoveDown();

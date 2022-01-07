@@ -32,11 +32,14 @@ namespace nsSoundManager
         {
             m_cameraPosition = Camera.main.transform.position;
             GameManager sctGameManager = FindObjectOfType<GameManager>();
+
+            nsInputManager.SctInputManager sctInputManager = FindObjectOfType<nsInputManager.SctInputManager>();
+
             sctGameManager.OnGameOver += GameManager_OnGameOver;
             sctGameManager.OnRowClear += GameManager_OnRowClear;
             sctGameManager.OnShapeDrop += () => { PlayClip(m_shapeDropClip, 1); };
-            sctGameManager.OnShapeMoveError += () => { PlayClip(m_shapeMoveErrorClip, 1); };
-            sctGameManager.OnShapeMoveSuccess += () => { PlayClip(m_shapeMoveSuccessClip, 1); };
+            sctInputManager.OnShapeMoveError += () => { PlayClip(m_shapeMoveErrorClip, 1); };
+            sctInputManager.OnShapeMoveSuccess += () => { PlayClip(m_shapeMoveSuccessClip, 1); };
             sctGameManager.OnPauseToggled += GameManager_OnPauseToggled;
             m_musicVolumeMultiplier = 1;
         }

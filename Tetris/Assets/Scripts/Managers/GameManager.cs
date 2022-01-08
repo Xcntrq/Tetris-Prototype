@@ -83,10 +83,11 @@ public class GameManager : MonoBehaviour
         if ((m_movingShape == null) && (m_sctGameBoard.IsShapeInHeaderSpace() == false))
         {
             m_movingShape = m_sctShapeSpawner.GetNextShape();
+            if (m_movingShape == null) return;
             //Assuming a new shape has been created, it shouldn't start falling down immediately
             m_timeOfNextShapeDrop = Time.time + m_shapeDropInterval;
             //If the player is holding down any buttons, a freshly spawned shape shouldn't be affected
-            m_inputManager.IsAllowedToHold = false;
+            m_movingShape.HasReceivedInput = false;
         }
         if (m_movingShape == null) return;
         if (Input.anyKey) m_inputManager.HandleInput(m_movingShape);

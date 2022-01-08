@@ -10,6 +10,13 @@ namespace nsMovingShape
         private nsGhostShape.SctGhostShape m_sctGhostShape;
         private SctGameBoard m_sctGameBoard;
         private Color m_ghostColor;
+        private bool m_hasReceivedInput = false;
+
+        public bool HasReceivedInput
+        {
+            get { return m_hasReceivedInput; }
+            set { m_hasReceivedInput = value; }
+        }
 
         public Color GhostColor
         {
@@ -48,6 +55,7 @@ namespace nsMovingShape
             m_sctShapeProperties = GetComponent<SctShapeProperties>();
             m_sctGameBoard = FindObjectOfType<SctGameBoard>();
             m_sctGameBoard.OnRowClear += UpdateGhostShape;
+            m_hasReceivedInput = false;
         }
 
         private void OnDestroy()

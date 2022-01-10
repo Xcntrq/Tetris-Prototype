@@ -37,7 +37,6 @@ namespace nsInputManager
             {
                 m_timeOfNextMoveLeft = Time.time + m_moveSidewaysCooldown;
                 //Once any key has been pressed for the current shape, it allows to hold any other key for that shape
-                movingShape.HasReceivedInput = true;
                 //Try moving it left
                 movingShape.MoveLeft();
                 //If the new position is against the rules of tetris, just move it back to where it was
@@ -54,7 +53,6 @@ namespace nsInputManager
             else if ((Input.GetButton("MoveRight") && (Time.time > m_timeOfNextMoveRight) && movingShape.HasReceivedInput) || Input.GetButtonDown("MoveRight"))
             {
                 m_timeOfNextMoveRight = Time.time + m_moveSidewaysCooldown;
-                movingShape.HasReceivedInput = true;
                 movingShape.MoveRight();
                 if (m_sctGameBoard.IsPositionValid(movingShape))
                 {
@@ -69,13 +67,11 @@ namespace nsInputManager
             if ((Input.GetButton("MoveDown") && (Time.time > m_timeOfNextMoveDown) && movingShape.HasReceivedInput) || Input.GetButtonDown("MoveDown"))
             {
                 m_timeOfNextMoveDown = Time.time + m_moveDownCooldown;
-                movingShape.HasReceivedInput = true;
-                m_gameManager.HandleShapeDrop();
+                m_gameManager.HandleShapeDrop(true);
             }
             if ((Input.GetButton("Rotate") && (Time.time > m_timeOfNextRotate) && movingShape.HasReceivedInput) || Input.GetButtonDown("Rotate"))
             {
                 m_timeOfNextRotate = Time.time + m_rotateCooldown;
-                movingShape.HasReceivedInput = true;
                 RotationDirection rotationDirection = m_gameManager.GetRotationDirection;
                 movingShape.Rotate(rotationDirection);
                 if (m_sctGameBoard.IsPositionValid(movingShape))

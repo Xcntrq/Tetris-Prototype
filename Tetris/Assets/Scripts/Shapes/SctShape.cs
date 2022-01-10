@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace nsGhostShape
+namespace nsShape
 {
-    public class SctGhostShape : MonoBehaviour
+    public class SctShape : MonoBehaviour
     {
         public void MoveUp()
         {

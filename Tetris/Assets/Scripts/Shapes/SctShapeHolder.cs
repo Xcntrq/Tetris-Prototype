@@ -1,7 +1,7 @@
 using UnityEngine;
 using nsShapeProperties;
 using nsMovingShape;
-using nsGhostShape;
+using nsShape;
 
 namespace nsShapeHolder
 {
@@ -37,14 +37,14 @@ namespace nsShapeHolder
                 ghostShapeProperties.transform.position = shapePropertiesToStore.transform.position;
                 ghostShapeProperties.transform.localRotation = m_localRotation;
                 ghostShapeProperties.transform.localScale = m_localScale;
-                SctGhostShape newGhostShape = ghostShapeProperties.gameObject.AddComponent<SctGhostShape>();
+                SctShape newShapeGhost = ghostShapeProperties.gameObject.AddComponent<SctShape>();
                 currentlyHeldShape = currentlyHeldShapeProperties.gameObject.AddComponent<SctMovingShape>();
                 while (m_sctGameBoard.IsPositionValid(currentlyHeldShape) == false)
                 {
                     currentlyHeldShapeProperties.transform.Translate(Vector3.up, Space.World);
                 }
                 currentlyHeldShape.GhostColor = m_ghostColor;
-                currentlyHeldShape.SctGhostShape = newGhostShape;
+                currentlyHeldShape.SctShapeGhost = newShapeGhost;
             }
 
             m_sctShapeProperties = shapePropertiesToStore;

@@ -4,10 +4,10 @@ using nsGameBoard;
 
 namespace nsMovingShape
 {
-    public class SctMovingShape : nsGhostShape.SctGhostShape
+    public class SctMovingShape : nsShape.SctShape
     {
         private SctShapeProperties m_sctShapeProperties;
-        private nsGhostShape.SctGhostShape m_sctGhostShape;
+        private nsShape.SctShape m_sctShapeGhost;
         private SctGameBoard m_sctGameBoard;
         private Color m_ghostColor;
         private bool m_hasReceivedInput = false;
@@ -26,54 +26,62 @@ namespace nsMovingShape
             }
         }
 
-        public nsGhostShape.SctGhostShape SctGhostShape
+        public nsShape.SctShape SctShapeGhost
         {
             set
             {
-                m_sctGhostShape = value;
-                SpriteRenderer[] allSquares = m_sctGhostShape.GetComponentsInChildren<SpriteRenderer>();
+                m_sctShapeGhost = value;
+                SpriteRenderer[] allSquares = m_sctShapeGhost.GetComponentsInChildren<SpriteRenderer>();
                 foreach (SpriteRenderer square in allSquares)
                 {
                     square.color = m_ghostColor;
                 }
-                UpdateGhostShape();
+                UpdateShapeGhost();
             }
         }
 
-        private void UpdateGhostShape()
+        private void UpdateShapeGhost()
         {
-            m_sctGhostShape.transform.SetPositionAndRotation(transform.position, transform.rotation);
-            while (m_sctGameBoard.IsPositionValid(m_sctGhostShape))
+            m_sctShapeGhost.transform.SetPositionAndRotation(transform.position, transform.rotation);
+            while (m_sctGameBoard.IsPositionValid(m_sctShapeGhost))
             {
-                m_sctGhostShape.MoveDown();
+                m_sctShapeGhost.MoveDown();
             }
-            m_sctGhostShape.MoveUp();
+            m_sctShapeGhost.MoveUp();
         }
 
         private void Awake()
         {
             m_sctShapeProperties = GetComponent<SctShapeProperties>();
             m_sctGameBoard = FindObjectOfType<SctGameBoard>();
-            m_sctGameBoard.OnRowClear += UpdateGhostShape;
+            m_sctGameBoard.OnRowClear += UpdateShapeGhost;
             m_hasReceivedInput = false;
         }
 
         private void OnDestroy()
         {
-            m_sctGameBoard.OnRowClear -= UpdateGhostShape;
-            if (m_sctGhostShape != null) Destroy(m_sctGhostShape.gameObject);
+            m_sctGameBoard.OnRowClear -= UpdateShapeGhost;
+            if (m_sctShapeGhost != null) Destroy(m_sctShapeGhost.gameObject);
         }
 
         public void MoveLeft()
         {
             transform.Translate(Vector3.left, Space.World);
-            UpdateGhostShape();
+            m_hasReceivedInput = true;
+            UpdateShapeGhost();
         }
 
         public void MoveRight()
         {
             transform.Translate(Vector3.right, Space.World);
-            UpdateGhostShape();
+            m_hasReceivedInput = true;
+            UpdateShapeGhost();
+        }
+
+        public void MoveDown(bool isReceivingInput)
+        {
+            transform.Translate(Vector3.down, Space.World);
+            m_hasReceivedInput = m_hasReceivedInput || isReceivingInput;
         }
 
         public void Rotate(RotationDirection rotationDirection)
@@ -81,7 +89,8 @@ namespace nsMovingShape
             if (!m_sctShapeProperties.IsRotatable) return;
             if (rotationDirection == RotationDirection.CW) transform.Rotate(0, 0, -90);
             if (rotationDirection == RotationDirection.CCW) transform.Rotate(0, 0, 90);
-            UpdateGhostShape();
+            m_hasReceivedInput = true;
+            UpdateShapeGhost();
         }
 
         public void RotateOppositeDirection(RotationDirection rotationDirection)
@@ -89,7 +98,8 @@ namespace nsMovingShape
             if (!m_sctShapeProperties.IsRotatable) return;
             if (rotationDirection == RotationDirection.CW) transform.Rotate(0, 0, 90);
             if (rotationDirection == RotationDirection.CCW) transform.Rotate(0, 0, -90);
-            UpdateGhostShape();
+            m_hasReceivedInput = true;
+            UpdateShapeGhost();
         }
 
         public SctShapeProperties ToSctShapeProperties()

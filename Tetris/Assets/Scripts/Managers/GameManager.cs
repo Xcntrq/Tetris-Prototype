@@ -94,7 +94,7 @@ public class GameManager : MonoBehaviour
         if (Time.time > m_timeOfNextShapeDrop)
         {
             m_timeOfNextShapeDrop = Time.time + m_shapeDropInterval;
-            HandleShapeDrop();
+            HandleShapeDrop(false);
         }
     }
 
@@ -144,10 +144,10 @@ public class GameManager : MonoBehaviour
         return result;
     }
 
-    public void HandleShapeDrop()
+    public void HandleShapeDrop(bool isShapeReceivingInput)
     {
         //Try moving it down
-        m_movingShape.MoveDown();
+        m_movingShape.MoveDown(isShapeReceivingInput);
         if (!m_sctGameBoard.IsPositionValid(m_movingShape))
         {
             //If the new position is against the rules of tetris, just move it back to where it was

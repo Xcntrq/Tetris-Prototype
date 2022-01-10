@@ -59,7 +59,7 @@ namespace nsGameBoard
             }
         }
 
-        public bool IsPositionValid(nsGhostShape.SctGhostShape shape)
+        public bool IsPositionValid(nsShape.SctShape shape)
         {
             //Check every square of the given shape
             foreach (Transform child in shape.transform)

@@ -1,5 +1,5 @@
 using UnityEngine;
-using nsGhostShape;
+using nsShape;
 using nsMovingShape;
 using nsShapeProperties;
 
@@ -38,10 +38,10 @@ namespace nsShapeSpawner
             ghostShapeProperties.transform.parent = transform;
             ghostShapeProperties.transform.localPosition = Vector3.zero;
             ghostShapeProperties.transform.localScale = Vector3.one;
-            SctGhostShape newGhostShape = ghostShapeProperties.gameObject.AddComponent<SctGhostShape>();
+            SctShape newGhostShape = ghostShapeProperties.gameObject.AddComponent<SctShape>();
             SctMovingShape newMovingShape = movingShapeProperties.gameObject.AddComponent<SctMovingShape>();
             newMovingShape.GhostColor = m_ghostColor;
-            newMovingShape.SctGhostShape = newGhostShape;
+            newMovingShape.SctShapeGhost = newGhostShape;
             return newMovingShape;
         }
 

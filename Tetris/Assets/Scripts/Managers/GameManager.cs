@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
 
     public event Action OnGameOver;
     public event Action OnShapeDrop;
+    public event Action OnShapeHold;
     public event Action<int, bool> OnRowClear;
     public event Action<bool> OnPauseToggled;
 
@@ -208,6 +209,7 @@ public class GameManager : MonoBehaviour
     public void HandleShapeHolding()
     {
         m_movingShape = m_shapeHolder.HoldShape(m_movingShape.ToSctShapeProperties());
+        OnShapeHold?.Invoke();
     }
 
     public void SctGameBoard_OnRowClear()

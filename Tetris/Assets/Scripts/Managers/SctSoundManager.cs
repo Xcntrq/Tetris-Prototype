@@ -18,6 +18,7 @@ namespace nsSoundManager
         [SerializeField] private AudioClip m_gameOverClip;
         [SerializeField] private AudioClip m_rowClearClip;
         [SerializeField] private AudioClip m_shapeDropClip;
+        [SerializeField] private AudioClip m_shapeHoldClip;
         [SerializeField] private AudioClip m_shapeMoveErrorClip;
         [SerializeField] private AudioClip m_shapeMoveSuccessClip;
         [SerializeField] private AudioClip m_gameOverVoiceClip;
@@ -38,6 +39,7 @@ namespace nsSoundManager
             sctGameManager.OnGameOver += GameManager_OnGameOver;
             sctGameManager.OnRowClear += GameManager_OnRowClear;
             sctGameManager.OnShapeDrop += () => { PlayClip(m_shapeDropClip, 1); };
+            sctGameManager.OnShapeHold += () => { PlayClip(m_shapeHoldClip, 1); };
             sctInputManager.OnShapeMoveError += () => { PlayClip(m_shapeMoveErrorClip, 1); };
             sctInputManager.OnShapeMoveSuccess += () => { PlayClip(m_shapeMoveSuccessClip, 1); };
             sctGameManager.OnPauseToggled += GameManager_OnPauseToggled;

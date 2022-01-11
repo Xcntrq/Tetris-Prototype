@@ -84,6 +84,10 @@ namespace nsInputManager
                     movingShape.RotateOppositeDirection(rotationDirection);
                 }
             }
+            if (Input.GetButtonDown("Hold"))
+            {
+                m_gameManager.HandleShapeHolding();
+            }
         }
     }
 }

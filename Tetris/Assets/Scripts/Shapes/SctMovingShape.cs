@@ -7,31 +7,28 @@ namespace nsMovingShape
     public class SctMovingShape : nsShape.SctShape
     {
         private SctShapeProperties m_sctShapeProperties;
-        private nsShape.SctShape m_sctShapeGhost;
+        private nsShape.SctShape m_ghost;
         private SctGameBoard m_sctGameBoard;
         private Color m_ghostColor;
         private bool m_hasReceivedInput = false;
 
         public bool HasReceivedInput
         {
-            get { return m_hasReceivedInput; }
-            set { m_hasReceivedInput = value; }
+            get => m_hasReceivedInput;
+            set => m_hasReceivedInput = value;
         }
 
         public Color GhostColor
         {
-            set
-            {
-                m_ghostColor = value;
-            }
+            set => m_ghostColor = value;
         }
 
-        public nsShape.SctShape SctShapeGhost
+        public nsShape.SctShape Ghost
         {
             set
             {
-                m_sctShapeGhost = value;
-                SpriteRenderer[] allSquares = m_sctShapeGhost.GetComponentsInChildren<SpriteRenderer>();
+                m_ghost = value;
+                SpriteRenderer[] allSquares = m_ghost.GetComponentsInChildren<SpriteRenderer>();
                 foreach (SpriteRenderer square in allSquares)
                 {
                     square.color = m_ghostColor;
@@ -42,12 +39,12 @@ namespace nsMovingShape
 
         private void UpdateShapeGhost()
         {
-            m_sctShapeGhost.transform.SetPositionAndRotation(transform.position, transform.rotation);
-            while (m_sctGameBoard.IsPositionValid(m_sctShapeGhost))
+            m_ghost.transform.SetPositionAndRotation(transform.position, transform.rotation);
+            while (m_sctGameBoard.IsPositionValid(m_ghost))
             {
-                m_sctShapeGhost.MoveDown();
+                m_ghost.MoveDown();
             }
-            m_sctShapeGhost.MoveUp();
+            m_ghost.MoveUp();
         }
 
         private void Awake()
@@ -61,7 +58,7 @@ namespace nsMovingShape
         private void OnDestroy()
         {
             m_sctGameBoard.OnRowClear -= UpdateShapeGhost;
-            if (m_sctShapeGhost != null) Destroy(m_sctShapeGhost.gameObject);
+            if (m_ghost != null) Destroy(m_ghost.gameObject);
         }
 
         public void MoveLeft()
@@ -109,6 +106,17 @@ namespace nsMovingShape
             Destroy(this);
             //GameObject without the MovingShape component is returned
             return result;
+        }
+
+        public void EnableGhost()
+        {
+            m_ghost.gameObject.SetActive(true);
+            UpdateShapeGhost();
+        }
+
+        public void DisableGhost()
+        {
+            m_ghost.gameObject.SetActive(false);
         }
     }
 }

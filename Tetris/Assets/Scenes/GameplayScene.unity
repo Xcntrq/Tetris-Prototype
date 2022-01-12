@@ -1963,12 +1963,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_allShapes:
   - {fileID: -7995469593441831369, guid: 5b55faf70194b534c83c80387239d8dd, type: 3}
-  m_ghostColor: {r: 1, g: 1, b: 1, a: 0.49019608}
   m_shapeQueueSlots:
   - {fileID: 1715335409}
   - {fileID: 1367396689}
   - {fileID: 1448001258}
   m_shapeScaleFactor: 4
+  m_ghostColor: {r: 1, g: 1, b: 1, a: 0.19607843}
 --- !u!4 &558016535
 Transform:
   m_ObjectHideFlags: 0
@@ -2255,7 +2255,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_shapeHoldSlot: {fileID: 872503853}
   m_shapeScaleFactor: 12
-  m_ghostColor: {r: 1, g: 1, b: 1, a: 0.19607843}
 --- !u!4 &601332572
 Transform:
   m_ObjectHideFlags: 0
@@ -4910,12 +4909,12 @@ MonoBehaviour:
   - {fileID: -5442790637006852065, guid: 16d1047005bbd7e4cb77fc8106927dbe, type: 3}
   - {fileID: -1465675952572405953, guid: 1f19f6f93611a814c9ce561d8cbeadde, type: 3}
   - {fileID: -4930969677196333569, guid: 674af7485d4d61642b77e4cca7fbbb56, type: 3}
-  m_ghostColor: {r: 1, g: 1, b: 1, a: 0.19607843}
   m_shapeQueueSlots:
   - {fileID: 1715335409}
   - {fileID: 1367396689}
   - {fileID: 1448001258}
   m_shapeScaleFactor: 12
+  m_ghostColor: {r: 1, g: 1, b: 1, a: 0.19607843}
 --- !u!4 &1566854801
 Transform:
   m_ObjectHideFlags: 0

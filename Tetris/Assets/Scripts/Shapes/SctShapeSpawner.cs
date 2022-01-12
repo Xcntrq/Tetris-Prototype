@@ -8,9 +8,9 @@ namespace nsShapeSpawner
     public class SctShapeSpawner : MonoBehaviour
     {
         [SerializeField] private SctShapeProperties[] m_allShapes;
-        [SerializeField] private Color m_ghostColor;
         [SerializeField] private Transform[] m_shapeQueueSlots;
         [SerializeField] private float m_shapeScaleFactor;
+        [SerializeField] private Color m_ghostColor;
 
         private Vector3 m_shapeScaleVector;
         private readonly SctShapeProperties[] m_shapeQueue = new SctShapeProperties[3];
@@ -41,7 +41,7 @@ namespace nsShapeSpawner
             SctShape newGhostShape = ghostShapeProperties.gameObject.AddComponent<SctShape>();
             SctMovingShape newMovingShape = movingShapeProperties.gameObject.AddComponent<SctMovingShape>();
             newMovingShape.GhostColor = m_ghostColor;
-            newMovingShape.SctShapeGhost = newGhostShape;
+            newMovingShape.Ghost = newGhostShape;
             return newMovingShape;
         }
 

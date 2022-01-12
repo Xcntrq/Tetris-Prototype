@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     //Absolute timestamp when the current moving shape has to be dropped by 1 tile automatically
     private float m_timeOfNextShapeDrop;
 
-    //Do we need a comment on that one? Srsly?
+    //Do we need a comment on that? Srsly?
     private bool m_isGameOver;
     private bool m_isGamePaused;
 
@@ -208,7 +208,7 @@ public class GameManager : MonoBehaviour
 
     public void HandleShapeHolding()
     {
-        m_movingShape = m_shapeHolder.HoldShape(m_movingShape.ToSctShapeProperties());
+        m_movingShape = m_shapeHolder.HoldShape(m_movingShape);
         OnShapeHold?.Invoke();
     }
 

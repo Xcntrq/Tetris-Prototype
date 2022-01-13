@@ -43,9 +43,8 @@ public class GameManager : MonoBehaviour
     private bool m_isGamePaused;
 
     public event Action OnGameOver;
-    public event Action OnShapeDrop;
     public event Action OnShapeHold;
-    public event Action<int, bool> OnRowClear;
+    public event Action<int, bool> OnShapeDrop;
     public event Action<bool> OnPauseToggled;
 
     public RotationDirection GetRotationDirection { get { return m_rotationDirection; } }
@@ -156,16 +155,9 @@ public class GameManager : MonoBehaviour
             //Also this means that the bottom of the shape has hit something, landed, so in the grid it goes and maybe completes some rows
             m_sctGameBoard.StoreShapeInGrid(m_movingShape);
             int rowsCleared = m_sctGameBoard.ClearAllCompleteRows();
-            if (rowsCleared > 0)
-            {
-                bool hasLeveledUp = m_scoreManager.AddScore(rowsCleared);
-                OnRowClear?.Invoke(rowsCleared, hasLeveledUp);
-                if (hasLeveledUp) m_shapeDropInterval = Mathf.Clamp(m_shapeDropCooldownAtStart - 0.05f * (m_scoreManager.Level - 1), 0.05f, 1f);
-            }
-            else
-            {
-                OnShapeDrop?.Invoke();
-            }
+            bool hasLeveledUp = m_scoreManager.AddScore(rowsCleared);
+            if (hasLeveledUp) m_shapeDropInterval = Mathf.Clamp(m_shapeDropCooldownAtStart - 0.05f * (m_scoreManager.Level - 1), 0.05f, 1f);
+            OnShapeDrop?.Invoke(rowsCleared, hasLeveledUp);
         }
     }
 

@@ -45,6 +45,8 @@ namespace nsScoreManager
                 case 4:
                     m_score += 1200 * m_level;
                     break;
+                default:
+                    break;
             }
             m_lines -= rowsCleared;
             if (m_lines <= 0)

@@ -99,15 +99,6 @@ namespace nsMovingShape
             UpdateShapeGhost();
         }
 
-        public SctShapeProperties ToSctShapeProperties()
-        {
-            var result = gameObject.GetComponent<SctShapeProperties>();
-            //Destroys the GhostShape as well as the MovingShape itself, no need to call Destroy(m_sctGhostShape.gameObject);
-            Destroy(this);
-            //GameObject without the MovingShape component is returned
-            return result;
-        }
-
         public void EnableGhost()
         {
             m_ghost.gameObject.SetActive(true);

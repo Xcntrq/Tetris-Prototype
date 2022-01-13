@@ -37,8 +37,7 @@ namespace nsSoundManager
             nsInputManager.SctInputManager sctInputManager = FindObjectOfType<nsInputManager.SctInputManager>();
 
             sctGameManager.OnGameOver += GameManager_OnGameOver;
-            sctGameManager.OnRowClear += GameManager_OnRowClear;
-            sctGameManager.OnShapeDrop += () => { PlayClip(m_shapeDropClip, 1); };
+            sctGameManager.OnShapeDrop += GameManager_OnShapeDrop;
             sctGameManager.OnShapeHold += () => { PlayClip(m_shapeHoldClip, 1); };
             sctInputManager.OnShapeMoveError += () => { PlayClip(m_shapeMoveErrorClip, 1); };
             sctInputManager.OnShapeMoveSuccess += () => { PlayClip(m_shapeMoveSuccessClip, 1); };
@@ -95,18 +94,28 @@ namespace nsSoundManager
             PlayClip(m_gameOverVoiceClip, 1);
         }
 
-        private void GameManager_OnRowClear(int rowsCleared, bool hasLeveledUp)
+        private void GameManager_OnShapeDrop(int rowsCleared, bool hasLeveledUp)
         {
             if (hasLeveledUp)
             {
                 PlayClip(m_LevelUpVoiceClip, 1);
             }
-            else if (rowsCleared > 1)
+            else
             {
-                int i = Random.Range(0, m_voiceClips.Length);
-                PlayClip(m_voiceClips[i], 1);
+                if (rowsCleared == 0)
+                {
+                    PlayClip(m_shapeDropClip, 1);
+                }
+                else if (rowsCleared == 1)
+                {
+                    PlayClip(m_rowClearClip, 1);
+                }
+                else if (rowsCleared > 1)
+                {
+                    int i = Random.Range(0, m_voiceClips.Length);
+                    PlayClip(m_voiceClips[i], 1);
+                }
             }
-            PlayClip(m_rowClearClip, 1);
         }
 
         private void GameManager_OnPauseToggled(bool isGamePaused)

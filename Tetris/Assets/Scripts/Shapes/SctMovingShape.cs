@@ -1,84 +1,67 @@
 using UnityEngine;
 using nsShapeProperties;
 using nsGameBoard;
+using nsShape;
 
 namespace nsMovingShape
 {
-    public class SctMovingShape : nsShape.SctShape
+    public class SctMovingShape : SctShape
     {
         private SctShapeProperties m_sctShapeProperties;
-        private nsShape.SctShape m_ghost;
+        private SctShape m_ghostShape;
         private SctGameBoard m_sctGameBoard;
-        private Color m_ghostColor;
-        private bool m_hasReceivedInput = false;
 
-        public bool HasReceivedInput
+        public bool HasReceivedInput { get; set; }
+
+        public void AttachGhostShape(SctShape ghostShape, Color ghostColor)
         {
-            get => m_hasReceivedInput;
-            set => m_hasReceivedInput = value;
+            m_ghostShape = ghostShape;
+            m_ghostShape.Color = ghostColor;
+            UpdateGhostShape();
         }
 
-        public Color GhostColor
+        private void UpdateGhostShape()
         {
-            set => m_ghostColor = value;
-        }
-
-        public nsShape.SctShape Ghost
-        {
-            set
+            m_ghostShape.transform.SetPositionAndRotation(transform.position, transform.rotation);
+            while (m_sctGameBoard.IsPositionValid(m_ghostShape))
             {
-                m_ghost = value;
-                SpriteRenderer[] allSquares = m_ghost.GetComponentsInChildren<SpriteRenderer>();
-                foreach (SpriteRenderer square in allSquares)
-                {
-                    square.color = m_ghostColor;
-                }
-                UpdateShapeGhost();
+                m_ghostShape.MoveDown();
             }
-        }
-
-        private void UpdateShapeGhost()
-        {
-            m_ghost.transform.SetPositionAndRotation(transform.position, transform.rotation);
-            while (m_sctGameBoard.IsPositionValid(m_ghost))
-            {
-                m_ghost.MoveDown();
-            }
-            m_ghost.MoveUp();
+            m_ghostShape.MoveUp();
         }
 
         private void Awake()
         {
             m_sctShapeProperties = GetComponent<SctShapeProperties>();
             m_sctGameBoard = FindObjectOfType<SctGameBoard>();
-            m_sctGameBoard.OnRowClear += UpdateShapeGhost;
-            m_hasReceivedInput = false;
+            m_sctGameBoard.OnRowClear += UpdateGhostShape;
+            HasReceivedInput = false;
         }
 
         private void OnDestroy()
         {
-            m_sctGameBoard.OnRowClear -= UpdateShapeGhost;
-            if (m_ghost != null) Destroy(m_ghost.gameObject);
+            m_sctGameBoard.OnRowClear -= UpdateGhostShape;
+            if (m_ghostShape != null) Destroy(m_ghostShape.gameObject);
         }
 
         public void MoveLeft()
         {
             transform.Translate(Vector3.left, Space.World);
-            m_hasReceivedInput = true;
-            UpdateShapeGhost();
+            HasReceivedInput = true;
+            UpdateGhostShape();
         }
 
         public void MoveRight()
         {
             transform.Translate(Vector3.right, Space.World);
-            m_hasReceivedInput = true;
-            UpdateShapeGhost();
+            HasReceivedInput = true;
+            UpdateGhostShape();
         }
 
         public void MoveDown(bool isReceivingInput)
         {
             transform.Translate(Vector3.down, Space.World);
-            m_hasReceivedInput = m_hasReceivedInput || isReceivingInput;
+            if (isReceivingInput) HasReceivedInput = true;
         }
 
         public void Rotate(RotationDirection rotationDirection)
@@ -86,8 +69,8 @@ namespace nsMovingShape
             if (!m_sctShapeProperties.IsRotatable) return;
             if (rotationDirection == RotationDirection.CW) transform.Rotate(0, 0, -90);
             if (rotationDirection == RotationDirection.CCW) transform.Rotate(0, 0, 90);
-            m_hasReceivedInput = true;
-            UpdateShapeGhost();
+            HasReceivedInput = true;
+            UpdateGhostShape();
         }
 
         public void RotateOppositeDirection(RotationDirection rotationDirection)
@@ -95,19 +78,19 @@ namespace nsMovingShape
             if (!m_sctShapeProperties.IsRotatable) return;
             if (rotationDirection == RotationDirection.CW) transform.Rotate(0, 0, 90);
             if (rotationDirection == RotationDirection.CCW) transform.Rotate(0, 0, -90);
-            m_hasReceivedInput = true;
-            UpdateShapeGhost();
+            HasReceivedInput = true;
+            UpdateGhostShape();
         }
 
         public void EnableGhost()
         {
-            m_ghost.gameObject.SetActive(true);
-            UpdateShapeGhost();
+            m_ghostShape.gameObject.SetActive(true);
+            UpdateGhostShape();
         }
 
         public void DisableGhost()
         {
-            m_ghost.gameObject.SetActive(false);
+            m_ghostShape.gameObject.SetActive(false);
         }
     }
 }

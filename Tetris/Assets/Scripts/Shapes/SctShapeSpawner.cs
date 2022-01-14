@@ -40,8 +40,7 @@ namespace nsShapeSpawner
             ghostShapeProperties.transform.localScale = Vector3.one;
             SctShape newGhostShape = ghostShapeProperties.gameObject.AddComponent<SctShape>();
             SctMovingShape newMovingShape = movingShapeProperties.gameObject.AddComponent<SctMovingShape>();
-            newMovingShape.GhostColor = m_ghostColor;
-            newMovingShape.Ghost = newGhostShape;
+            newMovingShape.AttachGhostShape(newGhostShape, m_ghostColor);
             return newMovingShape;
         }
 

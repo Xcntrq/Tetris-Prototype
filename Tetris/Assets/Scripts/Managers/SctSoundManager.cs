@@ -49,6 +49,7 @@ namespace nsSoundManager
         {
             m_imageTogglerSound.SetImage(m_isSoundEnabled);
             m_imageTogglerMusic.SetImage(m_isMusicEnabled);
+            CheckIfMusicShouldPlay();
         }
 
         private void PlayMusic()

@@ -21,6 +21,8 @@ namespace nsGameBoard
         private List<SctParticleSystemHost> m_sctParticleSystemHostSquares;
         public event Action OnRowClear;
 
+        public (int, int) GridSize { get => (m_width, m_height); }
+
         private void Awake()
         {
             m_grid = new Transform[m_width, m_height];
@@ -62,9 +64,9 @@ namespace nsGameBoard
         public bool IsPositionValid(nsShape.SctShape shape)
         {
             //Check every square of the given shape
-            foreach (Transform child in shape.transform)
+            foreach (Transform childSquare in shape.transform)
             {
-                Vector3Int childPosition = nsVectorf.Vectorf.RoundToInt(child.position);
+                Vector3Int childPosition = nsVectorf.Vectorf.RoundToInt(childSquare.position);
                 int x = childPosition.x;
                 int y = childPosition.y;
 

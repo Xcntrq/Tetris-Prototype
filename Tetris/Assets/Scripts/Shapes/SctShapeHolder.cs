@@ -1,6 +1,5 @@
 using UnityEngine;
 using nsMovingShape;
-using nsShape;
 
 namespace nsShapeHolder
 {
@@ -30,10 +29,7 @@ namespace nsShapeHolder
                 shapeToReturn.transform.position = shapeToHold.transform.position;
                 shapeToReturn.transform.localRotation = m_localRotation;
                 shapeToReturn.transform.localScale = m_localScale;
-                while (m_sctGameBoard.IsPositionValid(shapeToReturn) == false)
-                {
-                    shapeToReturn.transform.Translate(Vector3.up, Space.World);
-                }
+                CorrectPosition(shapeToReturn);
                 shapeToReturn.EnableGhost();
             }
 
@@ -57,6 +53,41 @@ namespace nsShapeHolder
             m_currentlyHeldShape.transform.localScale = new Vector3(m_shapeScaleFactor, m_shapeScaleFactor, 1);
 
             return shapeToReturn;
+        }
+
+        private void CorrectPosition(SctMovingShape sctMovingShape)
+        {
+            int gridWidth;
+            int gridHeight;
+            (gridWidth, gridHeight) = m_sctGameBoard.GridSize;
+            int GridMinX = 0;
+            int GridMaxX = gridWidth - 1;
+
+            int ChildSquaresMinX = int.MaxValue;
+            int ChildSquaresMaxX = int.MinValue;
+            foreach (Transform childSquare in sctMovingShape.transform)
+            {
+                Vector3Int childPosition = nsVectorf.Vectorf.RoundToInt(childSquare.position);
+                int ChildSquareX = childPosition.x;
+                if (ChildSquareX < ChildSquaresMinX) ChildSquaresMinX = ChildSquareX;
+                if (ChildSquareX > ChildSquaresMaxX) ChildSquaresMaxX = ChildSquareX;
+            }
+
+            if ((ChildSquaresMinX < GridMinX) || (ChildSquaresMaxX > GridMaxX))
+            {
+                int xDelta = 0;
+                Vector3Int shapePosition = nsVectorf.Vectorf.RoundToInt(sctMovingShape.transform.position);
+                if (ChildSquaresMinX < GridMinX) xDelta = GridMinX - ChildSquaresMinX;
+                if (ChildSquaresMaxX > GridMaxX) xDelta = GridMaxX - ChildSquaresMaxX;
+                int x = shapePosition.x + xDelta;
+                shapePosition.x = x;
+                sctMovingShape.transform.position = shapePosition;
+            }
+
+            while ((m_sctGameBoard.IsPositionValid(sctMovingShape) == false) && (sctMovingShape.transform.position.y < gridHeight))
+            {
+                sctMovingShape.MoveUp();
+            }
         }
     }
 }

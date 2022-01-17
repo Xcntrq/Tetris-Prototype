@@ -11,6 +11,7 @@ namespace nsShapeSpawner
         [SerializeField] private Transform[] m_shapeQueueSlots;
         [SerializeField] private float m_shapeScaleFactor;
         [SerializeField] private Color m_ghostColor;
+        [SerializeField] private float m_zShiftForGhost;
 
         private Vector3 m_shapeScaleVector;
         private readonly SctShapeProperties[] m_shapeQueue = new SctShapeProperties[3];
@@ -36,7 +37,7 @@ namespace nsShapeSpawner
             movingShapeProperties.transform.localScale = Vector3.one;
             SctShapeProperties ghostShapeProperties = Instantiate(movingShapeProperties);
             ghostShapeProperties.transform.parent = transform;
-            ghostShapeProperties.transform.localPosition = Vector3.zero;
+            ghostShapeProperties.transform.localPosition = Vector3.forward * m_zShiftForGhost;
             ghostShapeProperties.transform.localScale = Vector3.one;
             SctShape newGhostShape = ghostShapeProperties.gameObject.AddComponent<SctShape>();
             SctMovingShape newMovingShape = movingShapeProperties.gameObject.AddComponent<SctMovingShape>();

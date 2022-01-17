@@ -22,7 +22,9 @@ namespace nsMovingShape
 
         private void UpdateGhostShape()
         {
-            m_ghostShape.transform.SetPositionAndRotation(transform.position, transform.rotation);
+            Vector3 ghostPosition = transform.position;
+            ghostPosition.z = m_ghostShape.transform.position.z;
+            m_ghostShape.transform.SetPositionAndRotation(ghostPosition, transform.rotation);
             while (m_sctGameBoard.IsPositionValid(m_ghostShape))
             {
                 m_ghostShape.MoveDown();

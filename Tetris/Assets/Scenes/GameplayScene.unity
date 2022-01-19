@@ -6425,27 +6425,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 798b2bfe10fcfb5458095960cace98f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_isSoundEnabled: 1
-  m_imageTogglerSound: {fileID: 1281618928}
-  m_isMusicEnabled: 0
-  m_imageTogglerMusic: {fileID: 1324773035}
-  m_SoundVolume: 0.5
-  m_musicVolume: 0.1
-  m_musicVolumeMultiplierWhenPaused: 0.2
-  m_musicClip: {fileID: 8300000, guid: 967bb810f9fc65a47ab677eb4c98478b, type: 3}
-  m_gameOverClip: {fileID: 8300000, guid: 27da319bbfcfa00408742cd58514a7d2, type: 3}
-  m_rowClearClip: {fileID: 8300000, guid: f97c0499786186146a634264e419202e, type: 3}
-  m_shapeDropClip: {fileID: 8300000, guid: b5d0cfe95f8be1145ab3102e4c5b088e, type: 3}
-  m_shapeHoldClip: {fileID: 8300000, guid: a7413584a13623e41ae8ad6d7b8dab9e, type: 3}
-  m_shapeMoveErrorClip: {fileID: 8300000, guid: 657b68200b93dd949b86572af57046cd, type: 3}
-  m_shapeMoveSuccessClip: {fileID: 8300000, guid: 540bf94f7c8bb67449a0cadafa499c49, type: 3}
-  m_gameOverVoiceClip: {fileID: 8300000, guid: 5bf068cc05f1fda4f9990af4a612b8af, type: 3}
-  m_LevelUpVoiceClip: {fileID: 8300000, guid: 09cc4ec7465a3cb4fbf20876ca7cffaf, type: 3}
+  m_voicesVolume: 1
+  m_voiceGameOver: {fileID: 8300000, guid: d8ba3c42fa5f9a341b643dd897845051, type: 3}
+  m_voiceLevelUp: {fileID: 8300000, guid: 18d33f86f468da84ba0c5edbdb8691dc, type: 3}
   m_voiceClips:
-  - {fileID: 8300000, guid: 7a56679b6c58fb54392366367aa7da61, type: 3}
-  - {fileID: 8300000, guid: 1606adef676e9624f82a6572809b317c, type: 3}
-  - {fileID: 8300000, guid: e82880aa8ca4e4841b6f2c730b5fafa4, type: 3}
-  - {fileID: 8300000, guid: 18662b6d516589a4d82057fbd3f77248, type: 3}
+  - {fileID: 8300000, guid: 28c0395a5a4bc6e41a1902d942d3a847, type: 3}
+  - {fileID: 8300000, guid: 66ca25e985ba7ff46ab4658704d5d5f4, type: 3}
+  - {fileID: 8300000, guid: 39296c8db980c6842839d3e8cc47e91a, type: 3}
+  - {fileID: 8300000, guid: b61efa72b08e22243ad7932eb995f1e5, type: 3}
   m_musicSource: {fileID: 639185233}
 --- !u!4 &2004371603
 Transform:

@@ -1,128 +1,142 @@
 using UnityEngine;
+using nsInputManager;
+using nsImageTogglerOnOff;
+using System.Collections.Generic;
 
 namespace nsSoundManager
 {
     public class SctSoundManager : MonoBehaviour
     {
-        [SerializeField] private bool m_isSoundEnabled;
-        [SerializeField] private nsImageTogglerOnOff.SctImageTogglerOnOff m_imageTogglerSound;
-        [SerializeField] private bool m_isMusicEnabled;
-        [SerializeField] private nsImageTogglerOnOff.SctImageTogglerOnOff m_imageTogglerMusic;
+        [System.Serializable]
+        public class AudioClipAndVolume : Object
+        {
+            public AudioClip AudioClip { get; set; }
+            public float Volume { get; set; }
+        }
+
+        [SerializeField] private float m_voicesVolume;
+        [SerializeField] private AudioClip m_voiceGameOver;
+        [SerializeField] private AudioClip m_voiceLevelUp;
+        [SerializeField] private List<AudioClip> m_voiceClips;
 
         [Space]
+        [Space]
+        [Space]
+        [Space]
 
-        [SerializeField] private float m_SoundVolume;
-        [SerializeField] private float m_musicVolume;
-        [SerializeField] private float m_musicVolumeMultiplierWhenPaused;
-        [SerializeField] private AudioClip m_musicClip;
-        [SerializeField] private AudioClip m_gameOverClip;
-        [SerializeField] private AudioClip m_rowClearClip;
-        [SerializeField] private AudioClip m_shapeDropClip;
-        [SerializeField] private AudioClip m_shapeHoldClip;
-        [SerializeField] private AudioClip m_shapeMoveErrorClip;
-        [SerializeField] private AudioClip m_shapeMoveSuccessClip;
-        [SerializeField] private AudioClip m_gameOverVoiceClip;
-        [SerializeField] private AudioClip m_LevelUpVoiceClip;
-        [SerializeField] private AudioClip[] m_voiceClips;
         [SerializeField] private AudioSource m_musicSource;
 
-        private float m_musicVolumeMultiplier;
+        public bool IsMusicEnabled { get; set; }
+        public SctImageTogglerOnOff ImageTogglerMusic { get; set; }
+        public AudioClip MusicClip { get; set; }
+        public float MusicVolume { get; set; }
+        public float MusicVolumeWhenPaused { get; set; }
+
+        public bool IsSoundEnabled { get; set; }
+        public SctImageTogglerOnOff ImageTogglerSound { get; set; }
+        public float SoundVolume { get; set; }
+
+        public AudioClipAndVolume AudioGameOver { get; set; }
+        public AudioClipAndVolume AudioLevelUp { get; set; }
+        public AudioClipAndVolume AudioRowClear { get; set; }
+        public AudioClipAndVolume AudioShapeDrop { get; set; }
+        public AudioClipAndVolume AudioShapeHold { get; set; }
+        public AudioClipAndVolume AudioShapeMoveError { get; set; }
+        public AudioClipAndVolume AudioShapeMoveSuccess { get; set; }
+
         private Vector3 m_cameraPosition;
 
         private void Awake()
         {
             m_cameraPosition = Camera.main.transform.position;
             GameManager sctGameManager = FindObjectOfType<GameManager>();
-
-            nsInputManager.SctInputManager sctInputManager = FindObjectOfType<nsInputManager.SctInputManager>();
+            SctInputManager sctInputManager = FindObjectOfType<SctInputManager>();
 
             sctGameManager.OnGameOver += GameManager_OnGameOver;
             sctGameManager.OnShapeDrop += GameManager_OnShapeDrop;
-            sctGameManager.OnShapeHold += () => { PlayClip(m_shapeHoldClip, 1); };
-            sctInputManager.OnShapeMoveError += () => { PlayClip(m_shapeMoveErrorClip, 1); };
-            sctInputManager.OnShapeMoveSuccess += () => { PlayClip(m_shapeMoveSuccessClip, 1); };
+            sctGameManager.OnShapeHold += () => { PlayClip(AudioShapeHold.AudioClip, AudioShapeHold.Volume); };
+            sctInputManager.OnShapeMoveError += () => { PlayClip(AudioShapeMoveError.AudioClip, AudioShapeMoveError.Volume); };
+            sctInputManager.OnShapeMoveSuccess += () => { PlayClip(AudioShapeMoveSuccess.AudioClip, AudioShapeMoveSuccess.Volume); };
             sctGameManager.OnPauseToggled += GameManager_OnPauseToggled;
-            m_musicVolumeMultiplier = 1;
         }
 
         private void Start()
         {
-            m_imageTogglerSound.SetImage(m_isSoundEnabled);
-            m_imageTogglerMusic.SetImage(m_isMusicEnabled);
+            ImageTogglerSound.SetImage(IsSoundEnabled);
+            ImageTogglerMusic.SetImage(IsMusicEnabled);
+            m_musicSource.volume = MusicVolume;
+            m_musicSource.loop = true;
             CheckIfMusicShouldPlay();
         }
 
         private void PlayMusic()
         {
-            if (!m_musicClip || !m_musicSource) return;
+            if (!MusicClip || !m_musicSource) return;
             m_musicSource.Stop();
-            m_musicSource.clip = m_musicClip;
-            m_musicSource.volume = m_musicVolume * m_musicVolumeMultiplier;
-            m_musicSource.loop = true;
+            m_musicSource.clip = MusicClip;
             m_musicSource.Play();
         }
 
         private void CheckIfMusicShouldPlay()
         {
-            if (m_musicSource.isPlaying == m_isMusicEnabled) return;
-            if (!m_isMusicEnabled) m_musicSource.Stop();
-            if (m_isMusicEnabled) PlayMusic();
+            if (m_musicSource.isPlaying == IsMusicEnabled) return;
+            if (!IsMusicEnabled) m_musicSource.Stop();
+            if (IsMusicEnabled) PlayMusic();
         }
 
         public void ToggleMusic()
         {
-            m_isMusicEnabled = !m_isMusicEnabled;
+            IsMusicEnabled = !IsMusicEnabled;
             CheckIfMusicShouldPlay();
-            m_imageTogglerMusic.SetImage(m_isMusicEnabled);
+            ImageTogglerMusic.SetImage(IsMusicEnabled);
         }
 
         public void ToggleSound()
         {
-            m_isSoundEnabled = !m_isSoundEnabled;
-            m_imageTogglerSound.SetImage(m_isSoundEnabled);
+            IsSoundEnabled = !IsSoundEnabled;
+            ImageTogglerSound.SetImage(IsSoundEnabled);
         }
 
         private void PlayClip(AudioClip clip, float volume)
         {
-            if (!m_isSoundEnabled || (clip == null)) return;
-            AudioSource.PlayClipAtPoint(clip, m_cameraPosition, Mathf.Clamp(m_SoundVolume * volume, 0.05f, 1f));
+            if (!IsSoundEnabled || (clip == null)) return;
+            AudioSource.PlayClipAtPoint(clip, m_cameraPosition, Mathf.Clamp(SoundVolume * volume, 0.05f, 1f));
         }
 
         private void GameManager_OnGameOver()
         {
-            if (m_isMusicEnabled) ToggleMusic();
-            PlayClip(m_gameOverClip, 1);
-            PlayClip(m_gameOverVoiceClip, 1);
+            if (IsMusicEnabled) ToggleMusic();
+            PlayClip(AudioGameOver.AudioClip, AudioGameOver.Volume);
+            PlayClip(m_voiceGameOver, m_voicesVolume);
         }
 
         private void GameManager_OnShapeDrop(int rowsCleared, bool hasLeveledUp)
         {
             if (hasLeveledUp)
             {
-                PlayClip(m_LevelUpVoiceClip, 1);
+                PlayClip(m_voiceLevelUp, m_voicesVolume);
             }
             else
             {
                 if (rowsCleared == 0)
                 {
-                    PlayClip(m_shapeDropClip, 1);
+                    PlayClip(AudioShapeDrop.AudioClip, AudioShapeDrop.Volume);
                 }
                 else if (rowsCleared == 1)
                 {
-                    PlayClip(m_rowClearClip, 1);
+                    PlayClip(AudioRowClear.AudioClip, AudioRowClear.Volume);
                 }
                 else if (rowsCleared > 1)
                 {
-                    int i = Random.Range(0, m_voiceClips.Length);
-                    PlayClip(m_voiceClips[i], 1);
+                    int i = Random.Range(0, m_voiceClips.Count);
+                    PlayClip(m_voiceClips[i], m_voicesVolume);
                 }
             }
         }
 
         private void GameManager_OnPauseToggled(bool isGamePaused)
         {
-            m_musicVolumeMultiplier = isGamePaused ? m_musicVolumeMultiplierWhenPaused : 1;
-            m_musicSource.volume = m_musicVolume * m_musicVolumeMultiplier;
+            m_musicSource.volume = isGamePaused ? MusicVolumeWhenPaused : MusicVolume;
         }
     }
 }

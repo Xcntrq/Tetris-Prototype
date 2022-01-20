@@ -7,17 +7,10 @@ namespace nsSoundManager
 {
     public class SctSoundManager : MonoBehaviour
     {
-        [System.Serializable]
-        public class AudioClipAndVolume : Object
-        {
-            public AudioClip AudioClip { get; set; }
-            public float Volume { get; set; }
-        }
-
         [SerializeField] private float m_voicesVolume;
         [SerializeField] private AudioClip m_voiceGameOver;
         [SerializeField] private AudioClip m_voiceLevelUp;
-        [SerializeField] private List<AudioClip> m_voiceClips;
+        [SerializeField] private List<AudioClip> m_voiceBonus;
 
         [Space]
         [Space]
@@ -26,23 +19,30 @@ namespace nsSoundManager
 
         [SerializeField] private AudioSource m_musicSource;
 
-        public bool IsMusicEnabled { get; set; }
-        public SctImageTogglerOnOff ImageTogglerMusic { get; set; }
-        public AudioClip MusicClip { get; set; }
-        public float MusicVolume { get; set; }
-        public float MusicVolumeWhenPaused { get; set; }
+        [HideInInspector] public bool m_isMusicEnabled;
+        [HideInInspector] public SctImageTogglerOnOff m_imageTogglerMusic;
+        [HideInInspector] public AudioClip m_musicClip;
+        [HideInInspector] public float m_musicVolume;
+        [HideInInspector] public float m_musicVolumeWhenPaused;
 
-        public bool IsSoundEnabled { get; set; }
-        public SctImageTogglerOnOff ImageTogglerSound { get; set; }
-        public float SoundVolume { get; set; }
+        [HideInInspector] public bool m_isSoundEnabled;
+        [HideInInspector] public SctImageTogglerOnOff m_imageTogglerSound;
+        [HideInInspector] public float m_soundVolume;
 
-        public AudioClipAndVolume AudioGameOver { get; set; }
-        public AudioClipAndVolume AudioLevelUp { get; set; }
-        public AudioClipAndVolume AudioRowClear { get; set; }
-        public AudioClipAndVolume AudioShapeDrop { get; set; }
-        public AudioClipAndVolume AudioShapeHold { get; set; }
-        public AudioClipAndVolume AudioShapeMoveError { get; set; }
-        public AudioClipAndVolume AudioShapeMoveSuccess { get; set; }
+        [HideInInspector] public AudioClip m_audioGameOverClip;
+        [HideInInspector] public float m_audioGameOverVolume;
+        [HideInInspector] public AudioClip m_audioLevelUpClip;
+        [HideInInspector] public float m_audioLevelUpVolume;
+        [HideInInspector] public AudioClip m_audioRowClearClip;
+        [HideInInspector] public float m_audioRowClearVolume;
+        [HideInInspector] public AudioClip m_audioShapeDropClip;
+        [HideInInspector] public float m_audioShapeDropVolume;
+        [HideInInspector] public AudioClip m_audioShapeHoldClip;
+        [HideInInspector] public float m_audioShapeHoldVolume;
+        [HideInInspector] public AudioClip m_audioShapeMoveErrorClip;
+        [HideInInspector] public float m_audioShapeMoveErrorVolume;
+        [HideInInspector] public AudioClip m_audioShapeMoveSuccessClip;
+        [HideInInspector] public float m_audioShapeMoveSuccessVolume;
 
         private Vector3 m_cameraPosition;
 
@@ -54,59 +54,59 @@ namespace nsSoundManager
 
             sctGameManager.OnGameOver += GameManager_OnGameOver;
             sctGameManager.OnShapeDrop += GameManager_OnShapeDrop;
-            sctGameManager.OnShapeHold += () => { PlayClip(AudioShapeHold.AudioClip, AudioShapeHold.Volume); };
-            sctInputManager.OnShapeMoveError += () => { PlayClip(AudioShapeMoveError.AudioClip, AudioShapeMoveError.Volume); };
-            sctInputManager.OnShapeMoveSuccess += () => { PlayClip(AudioShapeMoveSuccess.AudioClip, AudioShapeMoveSuccess.Volume); };
+            sctGameManager.OnShapeHold += () => { PlayClip(m_audioShapeHoldClip, m_audioShapeHoldVolume); };
+            sctInputManager.OnShapeMoveError += () => { PlayClip(m_audioShapeMoveErrorClip, m_audioShapeMoveErrorVolume); };
+            sctInputManager.OnShapeMoveSuccess += () => { PlayClip(m_audioShapeMoveSuccessClip, m_audioShapeMoveSuccessVolume); };
             sctGameManager.OnPauseToggled += GameManager_OnPauseToggled;
         }
 
         private void Start()
         {
-            ImageTogglerSound.SetImage(IsSoundEnabled);
-            ImageTogglerMusic.SetImage(IsMusicEnabled);
-            m_musicSource.volume = MusicVolume;
+            if (m_imageTogglerSound != null) m_imageTogglerSound.SetImage(m_isSoundEnabled);
+            if (m_imageTogglerMusic != null) m_imageTogglerMusic.SetImage(m_isMusicEnabled);
+            m_musicSource.volume = m_musicVolume;
             m_musicSource.loop = true;
             CheckIfMusicShouldPlay();
         }
 
         private void PlayMusic()
         {
-            if (!MusicClip || !m_musicSource) return;
+            if (!m_musicClip || !m_musicSource) return;
             m_musicSource.Stop();
-            m_musicSource.clip = MusicClip;
+            m_musicSource.clip = m_musicClip;
             m_musicSource.Play();
         }
 
         private void CheckIfMusicShouldPlay()
         {
-            if (m_musicSource.isPlaying == IsMusicEnabled) return;
-            if (!IsMusicEnabled) m_musicSource.Stop();
-            if (IsMusicEnabled) PlayMusic();
+            if (m_musicSource.isPlaying == m_isMusicEnabled) return;
+            if (!m_isMusicEnabled) m_musicSource.Stop();
+            if (m_isMusicEnabled) PlayMusic();
         }
 
         public void ToggleMusic()
         {
-            IsMusicEnabled = !IsMusicEnabled;
+            m_isMusicEnabled = !m_isMusicEnabled;
             CheckIfMusicShouldPlay();
-            ImageTogglerMusic.SetImage(IsMusicEnabled);
+            m_imageTogglerMusic.SetImage(m_isMusicEnabled);
         }
 
         public void ToggleSound()
         {
-            IsSoundEnabled = !IsSoundEnabled;
-            ImageTogglerSound.SetImage(IsSoundEnabled);
+            m_isSoundEnabled = !m_isSoundEnabled;
+            m_imageTogglerSound.SetImage(m_isSoundEnabled);
         }
 
         private void PlayClip(AudioClip clip, float volume)
         {
-            if (!IsSoundEnabled || (clip == null)) return;
-            AudioSource.PlayClipAtPoint(clip, m_cameraPosition, Mathf.Clamp(SoundVolume * volume, 0.05f, 1f));
+            if (!m_isSoundEnabled || (clip == null)) return;
+            AudioSource.PlayClipAtPoint(clip, m_cameraPosition, Mathf.Clamp(m_soundVolume * volume, 0.05f, 1f));
         }
 
         private void GameManager_OnGameOver()
         {
-            if (IsMusicEnabled) ToggleMusic();
-            PlayClip(AudioGameOver.AudioClip, AudioGameOver.Volume);
+            if (m_isMusicEnabled) ToggleMusic();
+            PlayClip(m_audioGameOverClip, m_audioGameOverVolume);
             PlayClip(m_voiceGameOver, m_voicesVolume);
         }
 
@@ -120,23 +120,23 @@ namespace nsSoundManager
             {
                 if (rowsCleared == 0)
                 {
-                    PlayClip(AudioShapeDrop.AudioClip, AudioShapeDrop.Volume);
+                    PlayClip(m_audioShapeDropClip, m_audioShapeDropVolume);
                 }
                 else if (rowsCleared == 1)
                 {
-                    PlayClip(AudioRowClear.AudioClip, AudioRowClear.Volume);
+                    PlayClip(m_audioRowClearClip, m_audioRowClearVolume);
                 }
                 else if (rowsCleared > 1)
                 {
-                    int i = Random.Range(0, m_voiceClips.Count);
-                    PlayClip(m_voiceClips[i], m_voicesVolume);
+                    int i = Random.Range(0, m_voiceBonus.Count);
+                    PlayClip(m_voiceBonus[i], m_voicesVolume);
                 }
             }
         }
 
         private void GameManager_OnPauseToggled(bool isGamePaused)
         {
-            m_musicSource.volume = isGamePaused ? MusicVolumeWhenPaused : MusicVolume;
+            m_musicSource.volume = isGamePaused ? m_musicVolumeWhenPaused : m_musicVolume;
         }
     }
 }

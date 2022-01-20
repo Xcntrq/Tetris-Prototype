@@ -12,63 +12,63 @@ namespace nsSctSoundManagerEditor
         {
             base.OnInspectorGUI();
 
-            int spacing = 30;
+            int fixedDistance = 30;
             SctSoundManager sctSoundManager = (SctSoundManager)target;
 
             GUILayout.BeginHorizontal();
-            sctSoundManager.IsMusicEnabled = EditorGUILayout.Toggle("ImageTogglerMusic", sctSoundManager.IsMusicEnabled);
-            sctSoundManager.ImageTogglerMusic = (SctImageTogglerOnOff)EditorGUILayout.ObjectField(sctSoundManager.ImageTogglerMusic, typeof(SctImageTogglerOnOff), true);
+            sctSoundManager.m_isMusicEnabled = EditorGUILayout.Toggle("ImageTogglerMusic", sctSoundManager.m_isMusicEnabled);
+            sctSoundManager.m_imageTogglerMusic = (SctImageTogglerOnOff)EditorGUILayout.ObjectField(sctSoundManager.m_imageTogglerMusic, typeof(SctImageTogglerOnOff), true);
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            sctSoundManager.MusicClip = (AudioClip)EditorGUILayout.ObjectField("Music", sctSoundManager.MusicClip, typeof(AudioClip), true);
-            sctSoundManager.MusicVolume = EditorGUILayout.FloatField(sctSoundManager.MusicVolume, GUILayout.Width(spacing));
+            sctSoundManager.m_musicClip = (AudioClip)EditorGUILayout.ObjectField("Music", sctSoundManager.m_musicClip, typeof(AudioClip), true);
+            sctSoundManager.m_musicVolume = EditorGUILayout.FloatField(sctSoundManager.m_musicVolume, GUILayout.Width(fixedDistance));
             GUILayout.EndHorizontal();
 
-            sctSoundManager.MusicVolumeWhenPaused = EditorGUILayout.FloatField("MusicVolumeWhenPaused", sctSoundManager.MusicVolumeWhenPaused);
+            sctSoundManager.m_musicVolumeWhenPaused = EditorGUILayout.FloatField("MusicVolumeWhenPaused", sctSoundManager.m_musicVolumeWhenPaused);
 
-            GUILayout.Space(spacing);
+            GUILayout.Space(fixedDistance);
 
             GUILayout.BeginHorizontal();
-            sctSoundManager.IsSoundEnabled = EditorGUILayout.Toggle("ImageTogglerSound", sctSoundManager.IsSoundEnabled);
-            sctSoundManager.ImageTogglerSound = (SctImageTogglerOnOff)EditorGUILayout.ObjectField(sctSoundManager.ImageTogglerSound, typeof(SctImageTogglerOnOff), true);
+            sctSoundManager.m_isSoundEnabled = EditorGUILayout.Toggle("ImageTogglerSound", sctSoundManager.m_isSoundEnabled);
+            sctSoundManager.m_imageTogglerSound = (SctImageTogglerOnOff)EditorGUILayout.ObjectField(sctSoundManager.m_imageTogglerSound, typeof(SctImageTogglerOnOff), true);
             GUILayout.EndHorizontal();
 
-            sctSoundManager.SoundVolume = EditorGUILayout.FloatField("SoundVolume", sctSoundManager.SoundVolume);
+            sctSoundManager.m_soundVolume = EditorGUILayout.FloatField("SoundVolume", sctSoundManager.m_soundVolume);
 
             GUILayout.BeginHorizontal();
-            sctSoundManager.AudioGameOver.AudioClip = (AudioClip)EditorGUILayout.ObjectField("GameOver", sctSoundManager.AudioGameOver.AudioClip, typeof(AudioClip), true);
-            sctSoundManager.AudioGameOver.Volume = EditorGUILayout.FloatField(sctSoundManager.AudioGameOver.Volume, GUILayout.Width(spacing));
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            sctSoundManager.AudioLevelUp.AudioClip = (AudioClip)EditorGUILayout.ObjectField("LevelUp", sctSoundManager.AudioLevelUp.AudioClip, typeof(AudioClip), true);
-            sctSoundManager.AudioLevelUp.Volume = EditorGUILayout.FloatField(sctSoundManager.AudioLevelUp.Volume, GUILayout.Width(spacing));
+            sctSoundManager.m_audioGameOverClip = (AudioClip)EditorGUILayout.ObjectField("GameOver", sctSoundManager.m_audioGameOverClip, typeof(AudioClip), true);
+            sctSoundManager.m_audioGameOverVolume = EditorGUILayout.FloatField(sctSoundManager.m_audioGameOverVolume, GUILayout.Width(fixedDistance));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            sctSoundManager.AudioRowClear.AudioClip = (AudioClip)EditorGUILayout.ObjectField("RowClear", sctSoundManager.AudioRowClear.AudioClip, typeof(AudioClip), true);
-            sctSoundManager.AudioRowClear.Volume = EditorGUILayout.FloatField(sctSoundManager.AudioRowClear.Volume, GUILayout.Width(spacing));
+            sctSoundManager.m_audioLevelUpClip = (AudioClip)EditorGUILayout.ObjectField("LevelUp", sctSoundManager.m_audioLevelUpClip, typeof(AudioClip), true);
+            sctSoundManager.m_audioLevelUpVolume = EditorGUILayout.FloatField(sctSoundManager.m_audioLevelUpVolume, GUILayout.Width(fixedDistance));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            sctSoundManager.AudioShapeDrop.AudioClip = (AudioClip)EditorGUILayout.ObjectField("ShapeDrop", sctSoundManager.AudioShapeDrop.AudioClip, typeof(AudioClip), true);
-            sctSoundManager.AudioShapeDrop.Volume = EditorGUILayout.FloatField(sctSoundManager.AudioShapeDrop.Volume, GUILayout.Width(spacing));
+            sctSoundManager.m_audioRowClearClip = (AudioClip)EditorGUILayout.ObjectField("RowClear", sctSoundManager.m_audioRowClearClip, typeof(AudioClip), true);
+            sctSoundManager.m_audioRowClearVolume = EditorGUILayout.FloatField(sctSoundManager.m_audioRowClearVolume, GUILayout.Width(fixedDistance));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            sctSoundManager.AudioShapeHold.AudioClip = (AudioClip)EditorGUILayout.ObjectField("ShapeHold", sctSoundManager.AudioShapeHold.AudioClip, typeof(AudioClip), true);
-            sctSoundManager.AudioShapeHold.Volume = EditorGUILayout.FloatField(sctSoundManager.AudioShapeHold.Volume, GUILayout.Width(spacing));
+            sctSoundManager.m_audioShapeDropClip = (AudioClip)EditorGUILayout.ObjectField("ShapeDrop", sctSoundManager.m_audioShapeDropClip, typeof(AudioClip), true);
+            sctSoundManager.m_audioShapeDropVolume = EditorGUILayout.FloatField(sctSoundManager.m_audioShapeDropVolume, GUILayout.Width(fixedDistance));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            sctSoundManager.AudioShapeMoveError.AudioClip = (AudioClip)EditorGUILayout.ObjectField("ShapeMoveError", sctSoundManager.AudioShapeMoveError.AudioClip, typeof(AudioClip), true);
-            sctSoundManager.AudioShapeMoveError.Volume = EditorGUILayout.FloatField(sctSoundManager.AudioShapeMoveError.Volume, GUILayout.Width(spacing));
+            sctSoundManager.m_audioShapeHoldClip = (AudioClip)EditorGUILayout.ObjectField("ShapeHold", sctSoundManager.m_audioShapeHoldClip, typeof(AudioClip), true);
+            sctSoundManager.m_audioShapeHoldVolume = EditorGUILayout.FloatField(sctSoundManager.m_audioShapeHoldVolume, GUILayout.Width(fixedDistance));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            sctSoundManager.AudioShapeMoveSuccess.AudioClip = (AudioClip)EditorGUILayout.ObjectField("ShapeMoveSuccess", sctSoundManager.AudioShapeMoveSuccess.AudioClip, typeof(AudioClip), true);
-            sctSoundManager.AudioShapeMoveSuccess.Volume = EditorGUILayout.FloatField(sctSoundManager.AudioShapeMoveSuccess.Volume, GUILayout.Width(spacing));
+            sctSoundManager.m_audioShapeMoveErrorClip = (AudioClip)EditorGUILayout.ObjectField("ShapeMoveError", sctSoundManager.m_audioShapeMoveErrorClip, typeof(AudioClip), true);
+            sctSoundManager.m_audioShapeMoveErrorVolume = EditorGUILayout.FloatField(sctSoundManager.m_audioShapeMoveErrorVolume, GUILayout.Width(fixedDistance));
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            sctSoundManager.m_audioShapeMoveSuccessClip = (AudioClip)EditorGUILayout.ObjectField("ShapeMoveSuccess", sctSoundManager.m_audioShapeMoveSuccessClip, typeof(AudioClip), true);
+            sctSoundManager.m_audioShapeMoveSuccessVolume = EditorGUILayout.FloatField(sctSoundManager.m_audioShapeMoveSuccessVolume, GUILayout.Width(fixedDistance));
             GUILayout.EndHorizontal();
         }
     }

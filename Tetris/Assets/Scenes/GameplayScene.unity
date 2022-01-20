@@ -283,8 +283,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 30, y: 0}
-  m_SizeDelta: {x: 60, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &46235297
 MonoBehaviour:
@@ -1293,8 +1293,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 30, y: 0}
-  m_SizeDelta: {x: 60, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &339818237
 MonoBehaviour:
@@ -4364,8 +4364,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 30, y: 0}
-  m_SizeDelta: {x: 60, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1333471455
 MonoBehaviour:
@@ -6428,12 +6428,34 @@ MonoBehaviour:
   m_voicesVolume: 1
   m_voiceGameOver: {fileID: 8300000, guid: d8ba3c42fa5f9a341b643dd897845051, type: 3}
   m_voiceLevelUp: {fileID: 8300000, guid: 18d33f86f468da84ba0c5edbdb8691dc, type: 3}
-  m_voiceClips:
+  m_voiceBonus:
   - {fileID: 8300000, guid: 28c0395a5a4bc6e41a1902d942d3a847, type: 3}
   - {fileID: 8300000, guid: 66ca25e985ba7ff46ab4658704d5d5f4, type: 3}
   - {fileID: 8300000, guid: 39296c8db980c6842839d3e8cc47e91a, type: 3}
   - {fileID: 8300000, guid: b61efa72b08e22243ad7932eb995f1e5, type: 3}
   m_musicSource: {fileID: 639185233}
+  m_isMusicEnabled: 1
+  m_imageTogglerMusic: {fileID: 1324773035}
+  m_musicClip: {fileID: 8300000, guid: 967bb810f9fc65a47ab677eb4c98478b, type: 3}
+  m_musicVolume: 1
+  m_musicVolumeWhenPaused: 0.2
+  m_isSoundEnabled: 1
+  m_imageTogglerSound: {fileID: 1281618928}
+  m_soundVolume: 1
+  m_audioGameOverClip: {fileID: 8300000, guid: 9077fe5c08ab63b4d95e2a6710b78325, type: 3}
+  m_audioGameOverVolume: 1
+  m_audioLevelUpClip: {fileID: 8300000, guid: 025e6572044fa6d479f37c3af750134f, type: 3}
+  m_audioLevelUpVolume: 1
+  m_audioRowClearClip: {fileID: 8300000, guid: 79e9b08f102eaf74bb1760349e20216d, type: 3}
+  m_audioRowClearVolume: 1
+  m_audioShapeDropClip: {fileID: 8300000, guid: b5d0cfe95f8be1145ab3102e4c5b088e, type: 3}
+  m_audioShapeDropVolume: 1
+  m_audioShapeHoldClip: {fileID: 8300000, guid: f19e3350cc2684141a824e169b6acbb4, type: 3}
+  m_audioShapeHoldVolume: 1
+  m_audioShapeMoveErrorClip: {fileID: 8300000, guid: 657b68200b93dd949b86572af57046cd, type: 3}
+  m_audioShapeMoveErrorVolume: 1
+  m_audioShapeMoveSuccessClip: {fileID: 8300000, guid: 540bf94f7c8bb67449a0cadafa499c49, type: 3}
+  m_audioShapeMoveSuccessVolume: 1
 --- !u!4 &2004371603
 Transform:
   m_ObjectHideFlags: 0

@@ -42,6 +42,7 @@ namespace nsShapeSpawner
             SctShape newGhostShape = ghostShapeProperties.gameObject.AddComponent<SctShape>();
             SctMovingShape newMovingShape = movingShapeProperties.gameObject.AddComponent<SctMovingShape>();
             newMovingShape.AttachGhostShape(newGhostShape, m_ghostColor);
+            newMovingShape.HasReceivedInput = false;
             return newMovingShape;
         }
 

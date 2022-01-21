@@ -183,9 +183,9 @@ namespace nsGameBoard
 
         private IEnumerator ClearAllCompleteRowsRoutine(List<int> rowsToClear)
         {
-            yield return new WaitForSeconds(m_delayBeforeRowsDie);
-            int rowsCount = rowsToClear.Count;
-            for (int i = 0; i < rowsCount; i++)
+            int rowCount = rowsToClear.Count;
+            if (rowCount > 0) yield return new WaitForSeconds(m_delayBeforeRowsDie);
+            for (int i = 0; i < rowCount; i++)
             {
                 int rowIndex = rowsToClear[i] - i;
                 ClearRowAt(rowIndex);

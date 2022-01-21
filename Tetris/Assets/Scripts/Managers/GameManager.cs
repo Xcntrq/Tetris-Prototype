@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
     //Do we need a comment on that? Srsly?
     private bool m_isGameOver;
     private bool m_isGamePaused;
+    private bool m_isMovingShapeNeeded;
 
     public event Action OnGameOver;
     public event Action OnShapeHold;
@@ -75,20 +76,13 @@ public class GameManager : MonoBehaviour
         }
         IsAnyRequiredObjectNull(true);
         m_imageTogglerRotate.SetImage(m_rotationDirection);
+        m_isMovingShapeNeeded = true;
     }
 
     private void Update()
     {
         if (IsAnyRequiredObjectNull(false) || m_isGameOver || m_isGamePaused) return;
-        if ((m_movingShape == null) && (m_sctGameBoard.IsShapeInHeaderSpace() == false))
-        {
-            m_movingShape = m_sctShapeSpawner.GetNextShape();
-            if (m_movingShape == null) return;
-            //Assuming a new shape has been created, it shouldn't start falling down immediately
-            m_timeOfNextShapeDrop = Time.time + m_shapeDropInterval;
-            //If the player is holding down any buttons, a freshly spawned shape shouldn't be affected
-            m_movingShape.HasReceivedInput = false;
-        }
+        if (m_isMovingShapeNeeded == true) SpawnNewMovingShape();
         if (m_movingShape == null) return;
         if (Input.anyKey) m_inputManager.HandleInput(m_movingShape);
         if (Time.time > m_timeOfNextShapeDrop)
@@ -211,6 +205,32 @@ public class GameManager : MonoBehaviour
         if (m_isGameOver)
         {
             OnGameOver?.Invoke();
+        }
+        else
+        {
+            m_isMovingShapeNeeded = true;
+        }
+    }
+
+    private void SpawnNewMovingShape()
+    {
+        if (m_movingShape == null)
+        {
+            m_movingShape = m_sctShapeSpawner.GetNextShape();
+            if (m_movingShape == null)
+            {
+                Debug.Log("Couldn't spawn a new moving shape for some reason!");
+            }
+            else
+            {
+                //Assuming a new shape has been created, it shouldn't start falling down immediately
+                m_timeOfNextShapeDrop = Time.time + m_shapeDropInterval;
+                m_isMovingShapeNeeded = false;
+            }
+        }
+        else
+        {
+            Debug.Log("Can't spawn new moving shape! There's already a moving shape present!");
         }
     }
 }

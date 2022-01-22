@@ -186,7 +186,7 @@ public class GameManager : MonoBehaviour
         if (m_isGameOver) return;
         if (!m_panelGamePaused) return;
         m_isGamePaused = !m_isGamePaused;
-        m_textStart.gameObject.SetActive(!m_isGamePaused);
+        if (m_isGamePaused) m_textStart.gameObject.SetActive(false);
         m_panelGamePaused.SetActive(m_isGamePaused);
         OnPauseToggled?.Invoke(m_isGamePaused);
         Time.timeScale = m_isGamePaused ? 0 : 1;
@@ -195,6 +195,7 @@ public class GameManager : MonoBehaviour
     public void HandleShapeHolding()
     {
         m_movingShape = m_shapeHolder.HoldShape(m_movingShape);
+        if (m_movingShape == null) m_isMovingShapeNeeded = true;
         OnShapeHold?.Invoke();
     }
 

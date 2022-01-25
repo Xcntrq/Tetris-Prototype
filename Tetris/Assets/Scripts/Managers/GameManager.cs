@@ -1,3 +1,4 @@
+using nsEventManager;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -84,7 +85,6 @@ public class GameManager : MonoBehaviour
         if (IsAnyRequiredObjectNull(false) || m_isGameOver || m_isGamePaused) return;
         if (m_isMovingShapeNeeded == true) SpawnNewMovingShape();
         if (m_movingShape == null) return;
-        if (Input.anyKey) m_inputManager.HandleInput(m_movingShape);
         if (Time.time > m_timeOfNextShapeDrop)
         {
             m_timeOfNextShapeDrop = Time.time + m_shapeDropInterval;
@@ -196,6 +196,7 @@ public class GameManager : MonoBehaviour
     {
         m_movingShape = m_shapeHolder.HoldShape(m_movingShape);
         if (m_movingShape == null) m_isMovingShapeNeeded = true;
+        if (m_movingShape != null) EventManager.InvokeOnShapeSpawn(m_movingShape);
         OnShapeHold?.Invoke();
     }
 
@@ -224,14 +225,15 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                //Assuming a new shape has been created, it shouldn't start falling down immediately
+                //A new shape has been created, it shouldn't start falling down immediately
                 m_timeOfNextShapeDrop = Time.time + m_shapeDropInterval;
                 m_isMovingShapeNeeded = false;
+                EventManager.InvokeOnShapeSpawn(m_movingShape);
             }
         }
         else
         {
-            Debug.Log("Can't spawn new moving shape! There's already a moving shape present!");
+            Debug.Log("Can't spawn another moving shape! There's already one present!");
         }
     }
 }

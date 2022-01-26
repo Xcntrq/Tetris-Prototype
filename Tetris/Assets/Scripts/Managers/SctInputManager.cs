@@ -71,6 +71,8 @@ namespace nsInputManager
 
         private void Update()
         {
+            if (m_movingShape == null) return;
+
             //If held down, the key procs only if enough time has passed and if it's still applied to the same shape
             //Otherwise you have let go of the key and press it again, this also allows for faster movements and rotations
             //HasReceivedInput mainly helps the "down" key, because if you quickly drop one shape, you don't wanna drop the next one too

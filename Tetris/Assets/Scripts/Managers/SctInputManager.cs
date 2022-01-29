@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using nsTouchScreenManager;
-using nsEventManager;
 using nsMovingShape;
 
 namespace nsInputManager
@@ -54,14 +53,14 @@ namespace nsInputManager
         {
             SctTouchScreenManager.OnSwipe += HandleSwipe;
             SctTouchScreenManager.OnSwipeEnd += HandleSwipeEnd;
-            EventManager.OnShapeSpawn += RegisterMovingShape;
+            m_gameManager.OnShapeSpawn += RegisterMovingShape;
         }
 
         private void OnDisable()
         {
             SctTouchScreenManager.OnSwipe -= HandleSwipe;
             SctTouchScreenManager.OnSwipeEnd -= HandleSwipeEnd;
-            EventManager.OnShapeSpawn -= RegisterMovingShape;
+            m_gameManager.OnShapeSpawn -= RegisterMovingShape;
         }
 
         private void RegisterMovingShape(SctMovingShape movingShape)

@@ -1,4 +1,3 @@
-using nsEventManager;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -46,6 +45,7 @@ public class GameManager : MonoBehaviour
 
     public event Action OnGameOver;
     public event Action OnShapeHold;
+    public event Action<nsMovingShape.SctMovingShape> OnShapeSpawn;
     public event Action<int, bool> OnShapeDrop;
     public event Action<bool> OnPauseToggled;
 
@@ -196,7 +196,7 @@ public class GameManager : MonoBehaviour
     {
         m_movingShape = m_shapeHolder.HoldShape(m_movingShape);
         if (m_movingShape == null) m_isMovingShapeNeeded = true;
-        if (m_movingShape != null) EventManager.InvokeOnShapeSpawn(m_movingShape);
+        if (m_movingShape != null) OnShapeSpawn?.Invoke(m_movingShape);
         OnShapeHold?.Invoke();
     }
 
@@ -228,7 +228,7 @@ public class GameManager : MonoBehaviour
                 //A new shape has been created, it shouldn't start falling down immediately
                 m_timeOfNextShapeDrop = Time.time + m_shapeDropInterval;
                 m_isMovingShapeNeeded = false;
-                EventManager.InvokeOnShapeSpawn(m_movingShape);
+                OnShapeSpawn?.Invoke(m_movingShape);
             }
         }
         else

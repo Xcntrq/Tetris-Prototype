@@ -104,7 +104,8 @@ namespace nsSoundManager
         private void PlayClip(AudioClip clip, float volume)
         {
             if (!m_isSoundEnabled || (clip == null)) return;
-            m_soundSource.PlayOneShot(clip, Mathf.Clamp(m_soundVolume * volume, 0.05f, 1f));
+            float volumeClamped = Mathf.Clamp(m_soundVolume * volume, 0.05f, 1f);
+            AudioSource.PlayClipAtPoint(clip, m_cameraPosition, volumeClamped);
         }
 
         private void GameManager_OnGameOver()

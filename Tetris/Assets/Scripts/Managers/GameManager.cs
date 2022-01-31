@@ -70,6 +70,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        if (nsGameStateManager.GameStateManager.Instance.GameState == nsGameStateManager.GameState.Playing)
+        {
+            m_isGameOver = false;
+            m_isGamePaused = false;
+        }
+
         if (m_sctShapeSpawner != null)
         {
             //Shapes spawn relative to the Transform of the Spawner, so just in case, round it with Vectorf

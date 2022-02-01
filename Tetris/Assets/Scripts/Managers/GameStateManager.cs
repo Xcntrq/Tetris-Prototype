@@ -9,30 +9,36 @@ namespace nsGameStateManager
         Over
     }
 
-    public class GameStateManager : MonoBehaviour
+    public class GameStateManager
     {
-        public static GameStateManager Instance { get; private set; } = null;
+        private static readonly GameStateManager instance = new GameStateManager();
 
-        public GameState GameState { get; set; }
+        public static GameStateManager Instance { get => instance; }
 
-        private void Awake()
-        {
-            if (Instance == null)
-            {
-                Instance = this;
-                //GameStateManager doesn't need to be persistent - reloading the scene currently means starting a new game and should reset the state anyway.
-                //DontDestroyOnLoad(gameObject);
-                Initialize();
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-        }
+        public GameState GameState { get; private set; }
 
-        private void Initialize()
+        private GameStateManager()
         {
             GameState = GameState.Playing;
+        }
+
+        public void TogglePause()
+        {
+            switch (GameState)
+            {
+                case GameState.Playing:
+                    GameState = GameState.Paused;
+                    break;
+                case GameState.Paused:
+                    GameState = GameState.Playing;
+                    break;
+            }
+            //Debug.Log("CRAAAAAAP");
+        }
+
+        public void TriggerGameOver()
+        {
+            GameState = GameState.Over;
         }
     }
 }

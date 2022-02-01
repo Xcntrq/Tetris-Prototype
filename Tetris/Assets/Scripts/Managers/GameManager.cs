@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using nsGameStateManager;
 
 public enum RotationDirection
 {
@@ -39,17 +40,18 @@ public class GameManager : MonoBehaviour
     private float m_timeOfNextShapeDrop;
 
     //Do we need a comment on that? Srsly?
-    private bool m_isGameOver;
-    private bool m_isGamePaused;
     private bool m_isMovingShapeNeeded;
 
     public event Action OnGameOver;
     public event Action OnShapeHold;
     public event Action<nsMovingShape.SctMovingShape> OnShapeSpawn;
     public event Action<int, bool> OnShapeDrop;
-    public event Action<bool> OnPauseToggled;
+    //public event Action<bool> OnPauseToggled;
 
     public RotationDirection GetRotationDirection { get { return m_rotationDirection; } }
+
+
+    [SerializeField] private Button test;
 
     private void Awake()
     {
@@ -60,8 +62,6 @@ public class GameManager : MonoBehaviour
         m_shapeHolder = FindObjectOfType<nsShapeHolder.SctShapeHolder>();
         m_inputManager = FindObjectOfType<nsInputManager.SctInputManager>();
 
-        m_isGameOver = false;
-
         OnGameOver += HandleGameOver;
         m_shapeDropCooldownAtStart = m_shapeDropInterval;
 
@@ -70,12 +70,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        if (nsGameStateManager.GameStateManager.Instance.GameState == nsGameStateManager.GameState.Playing)
-        {
-            m_isGameOver = false;
-            m_isGamePaused = false;
-        }
-
         if (m_sctShapeSpawner != null)
         {
             //Shapes spawn relative to the Transform of the Spawner, so just in case, round it with Vectorf
@@ -84,11 +78,13 @@ public class GameManager : MonoBehaviour
         IsAnyRequiredObjectNull(true);
         m_imageTogglerRotate.SetImage(m_rotationDirection);
         m_isMovingShapeNeeded = true;
+
+        test.onClick.AddListener(GameStateManager.Instance.TogglePause);
     }
 
     private void Update()
     {
-        if (IsAnyRequiredObjectNull(false) || m_isGameOver || m_isGamePaused) return;
+        if (IsAnyRequiredObjectNull(false) || (GameStateManager.Instance.GameState != GameState.Playing)) return;
         if (m_isMovingShapeNeeded == true) SpawnNewMovingShape();
         if (m_movingShape == null) return;
         if (Time.time > m_timeOfNextShapeDrop)
@@ -189,13 +185,13 @@ public class GameManager : MonoBehaviour
 
     public void TogglePause()
     {
-        if (m_isGameOver) return;
+        if (GameStateManager.Instance.GameState == GameState.Over) return;
         if (!m_panelGamePaused) return;
-        m_isGamePaused = !m_isGamePaused;
-        if (m_isGamePaused) m_textStart.gameObject.SetActive(false);
-        m_panelGamePaused.SetActive(m_isGamePaused);
-        OnPauseToggled?.Invoke(m_isGamePaused);
-        Time.timeScale = m_isGamePaused ? 0 : 1;
+        //m_isGamePaused = !m_isGamePaused;
+        //if (m_isGamePaused) m_textStart.gameObject.SetActive(false);
+        //m_panelGamePaused.SetActive(m_isGamePaused);
+        //OnPauseToggled?.Invoke(m_isGamePaused);
+        //Time.timeScale = m_isGamePaused ? 0 : 1;
     }
 
     public void HandleShapeHolding()
@@ -209,15 +205,15 @@ public class GameManager : MonoBehaviour
     public void SctGameBoard_OnRowClear()
     {
         //If the shape landed above the visible grid, it's a game over
-        m_isGameOver = m_sctGameBoard.IsShapeInHeaderSpace();
-        if (m_isGameOver)
-        {
-            OnGameOver?.Invoke();
-        }
-        else
-        {
-            m_isMovingShapeNeeded = true;
-        }
+        //m_isGameOver = m_sctGameBoard.IsShapeInHeaderSpace();
+        //if (m_isGameOver)
+        //{
+        OnGameOver?.Invoke();
+        //}
+        //else
+        // {
+        m_isMovingShapeNeeded = true;
+        // }
     }
 
     private void SpawnNewMovingShape()

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,8 +9,8 @@ namespace nsScoreManager
         [SerializeField] private int m_linesPerLevel;
 
         [SerializeField] private Text m_textScore;
-        [SerializeField] private Text m_textLines;
-        [SerializeField] private Text m_textLevel;
+        [SerializeField] private TextMeshProUGUI m_textLines;
+        [SerializeField] private TextMeshProUGUI m_textLevel;
 
         private int m_score;
         private int m_lines;

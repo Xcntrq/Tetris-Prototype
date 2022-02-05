@@ -50,9 +50,6 @@ public class GameManager : MonoBehaviour
 
     public RotationDirection GetRotationDirection { get { return m_rotationDirection; } }
 
-
-    [SerializeField] private Button test;
-
     private void Awake()
     {
         m_sctGameBoard = FindObjectOfType<nsGameBoard.SctGameBoard>();
@@ -78,8 +75,6 @@ public class GameManager : MonoBehaviour
         IsAnyRequiredObjectNull(true);
         m_imageTogglerRotate.SetImage(m_rotationDirection);
         m_isMovingShapeNeeded = true;
-
-        test.onClick.AddListener(GameStateManager.Instance.TogglePause);
     }
 
     private void Update()

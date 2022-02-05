@@ -1,4 +1,4 @@
-using UnityEngine;
+using System;
 
 namespace nsGameStateManager
 {
@@ -17,6 +17,8 @@ namespace nsGameStateManager
 
         public GameState GameState { get; private set; }
 
+        public event Action<GameState> OnPauseToggled;
+
         private GameStateManager()
         {
             GameState = GameState.Playing;
@@ -33,7 +35,7 @@ namespace nsGameStateManager
                     GameState = GameState.Playing;
                     break;
             }
-            //Debug.Log("CRAAAAAAP");
+            OnPauseToggled?.Invoke(GameState);
         }
 
         public void TriggerGameOver()

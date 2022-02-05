@@ -2,6 +2,7 @@ using UnityEngine;
 using nsInputManager;
 using nsImageTogglerOnOff;
 using System.Collections.Generic;
+using nsGameStateManager;
 
 namespace nsSoundManager
 {
@@ -46,6 +47,16 @@ namespace nsSoundManager
 
         private Vector3 m_cameraPosition;
 
+        private void OnEnable()
+        {
+            GameStateManager.Instance.OnPauseToggled += GameStateManager_OnPauseToggled;
+        }
+
+        private void OnDisable()
+        {
+            GameStateManager.Instance.OnPauseToggled -= GameStateManager_OnPauseToggled;
+        }
+
         private void Awake()
         {
             m_cameraPosition = Camera.main.transform.position;
@@ -57,7 +68,6 @@ namespace nsSoundManager
             sctGameManager.OnShapeHold += () => { PlayClip(m_audioShapeHold.m_audioClip, m_audioShapeHold.m_volume); };
             sctInputManager.OnShapeMoveError += () => { PlayClip(m_audioShapeMoveError.m_audioClip, m_audioShapeMoveError.m_volume); };
             sctInputManager.OnShapeMoveSuccess += () => { PlayClip(m_audioShapeMoveSuccess.m_audioClip, m_audioShapeMoveSuccess.m_volume); };
-            //sctGameManager.OnPauseToggled += GameManager_OnPauseToggled;
         }
 
         private void Start()
@@ -139,9 +149,17 @@ namespace nsSoundManager
             }
         }
 
-        private void GameManager_OnPauseToggled(bool isGamePaused)
+        private void GameStateManager_OnPauseToggled(GameState gameState)
         {
-            m_musicSource.volume = isGamePaused ? m_musicVolumeWhenPaused : m_music.m_volume;
+            switch (gameState)
+            {
+                case GameState.Playing:
+                    m_musicSource.volume = m_music.m_volume;
+                    break;
+                case GameState.Paused:
+                    m_musicSource.volume = m_musicVolumeWhenPaused;
+                    break;
+            }
         }
     }
 }

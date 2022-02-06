@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using nsTouchScreenManager;
 using nsMovingShape;
+using nsGameStateManager;
 
 namespace nsInputManager
 {
@@ -70,6 +71,10 @@ namespace nsInputManager
 
         private void Update()
         {
+            bool isGameOver = GameStateManager.Instance.GameState == GameState.Over;
+            bool isGamePaused = GameStateManager.Instance.GameState == GameState.Paused;
+            if (isGameOver || isGamePaused) return;
+
             if (m_movingShape == null) return;
 
             //If held down, the key procs only if enough time has passed and if it's still applied to the same shape

@@ -18,8 +18,14 @@ namespace nsGameStateManager
         public GameState GameState { get; private set; }
 
         public event Action<GameState> OnPauseToggled;
+        public event Action OnGameOverTriggered;
 
         private GameStateManager()
+        {
+            Initialize();
+        }
+
+        public void Initialize()
         {
             GameState = GameState.Playing;
         }
@@ -41,6 +47,7 @@ namespace nsGameStateManager
         public void TriggerGameOver()
         {
             GameState = GameState.Over;
+            OnGameOverTriggered?.Invoke();
         }
     }
 }

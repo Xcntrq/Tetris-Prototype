@@ -2,11 +2,12 @@ using UnityEngine;
 
 namespace nsApplicationQuitter
 {
-    public class SctApplicationQuitter : MonoBehaviour
+    public class ApplicationQuitter
     {
-        public void Quit()
+        public void QuitApplication()
         {
             Application.Quit();
+            Debug.Log("I quit!");
         }
     }
 }

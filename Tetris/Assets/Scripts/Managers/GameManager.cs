@@ -43,8 +43,8 @@ public class GameManager : MonoBehaviour
     //Do we need a comment on that? Srsly?
     private bool m_isMovingShapeNeeded;
 
+    //We only ever need one ApplicationQuitter
     private ApplicationQuitter m_applicationQuitter = null;
-
     public ApplicationQuitter ApplicationQuitter
     {
         get
